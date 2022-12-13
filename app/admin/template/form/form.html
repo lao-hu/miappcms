@@ -1,0 +1,179 @@
+<!-- 额外的CSS -->
+{$other_css|raw|default=''}
+<!--  额外HTML代码 -->
+{notempty name="other_html_top"}
+<div class="marb10">
+  <div class="layui-row layui-col-space15">
+    <div class="layui-col-md12">
+      <div class="layui-panel other_html_top">
+        {$other_html_top|raw|default=''}
+      </div>   
+    </div>
+  </div> 
+</div>
+{/notempty}
+
+<div class="miappcms-containers">
+  <div class="layui-row">
+    <div class="layui-col-md12 ">
+      <!-- 页面提示 -->
+      {notempty name="page_tips"}
+      <blockquote class="layui-elem-quote {$tips_type} mart20">
+        <p>
+          {$page_tips|raw}
+        </p>
+      </blockquote>
+      {/notempty}
+ 
+      <div class="miappcms-form mart20 marb50">
+        <form action="{$form_url}" method="{$form_method}" class="{$form_class} ">
+          {if $form_element}
+            {volist name="form_element" id="form"}
+              {switch form.type}
+                {case tab}
+                  <!-- 选项卡 -->
+                  {include file="form/element/tab" keyword='' /}
+                {/case}
+                {case hidden}
+                  <!-- 隐藏域-->
+                  {include file="form/element/hidden" keyword='' /}
+                {/case}
+                {case text}
+                  <!-- 单行文本 -->
+                  {include file="form/element/text" keyword='' /}
+                {/case}
+                {case textarea}
+                  <!-- 多行文本 -->
+                  {include file="form/element/textarea" keyword='' /}
+                {/case}
+                {case editor}
+                  <!-- 编辑器 -->
+                  {include file="form/element/editor" keyword='' /}
+                {/case}
+                {case radio}
+                  <!-- 单选按钮 -->
+                  {include file="form/element/radio" keyword='' /}
+                {/case}
+                {case checkbox}
+                  <!-- 多选按钮 -->
+                  {include file="form/element/checkbox" keyword='' /}
+                {/case}
+                {case select}
+                <!-- 多选按钮 -->
+                {include file="form/element/select" keyword='' /}
+                {/case}
+               
+                {case password}
+                  <!-- 密码-->
+                  {include file="form/element/password" keyword=''/}
+                {/case}
+                {case number}
+                  <!-- 数字 -->
+                  {include file="form/element/number" keyword=''/}
+                {/case}
+                {case date}
+                    <!-- 年月日 -->
+                  {include file="form/element/date" keyword=''/}
+                {/case}
+                {case time}
+                  <!-- 时分秒 -->
+                  {include file="form/element/time" keyword=''/}
+                {/case}
+                {case datetime}
+                <!-- 年月日时分秒 -->
+                  {include file="form/element/datetime" keyword=''/}
+                {/case}
+                {case image}
+                <!-- 单图片 -->
+                  {include file="form/element/image" keyword=''/}
+                {/case}
+                {case images}
+                <!-- 多图片 -->
+                  {include file="form/element/images" keyword=''/}
+                {/case}
+                {case file}
+                <!-- 文件 -->
+                  {include file="form/element/file" keyword=''/}
+                {/case}
+                {case files}
+                <!-- 多文件 -->
+                  {include file="form/element/files" keyword=''/}
+                {/case}
+                {case tags}
+                  {include file="form/element/tags" keyword=''}
+                {/case}
+                {case code}
+                  <!-- 代码 -->
+                  {include file="form/element/code" keyword=''}
+                {/case}
+                {case pinyin}
+                  <!-- 拼音 -->
+                  {include file="form/element/pinyin" keyword=''}
+                {/case}
+              {/switch}
+            {/volist}
+           
+          
+          
+          <div class="layui-form-item marb20 mi-forms-btns">
+            <div class="layui-input-block ">
+              {if isset($btn_hide) && !in_array('submit', $btn_hide)}
+              <button class="layui-btn {if $layer == true }layui-hide {/if}" lay-submit lay-filter="formDemo" >立即提交</button>
+              {/if}
+              {if isset($btn_hide) && !in_array('reset', $btn_hide) /}
+              <button type="reset"  class="layui-btn layui-btn-primary {if $layer == true }layui-hide {/if}"  >重置</button>
+              {/if}
+              <!-- 额外按钮 -->
+              {foreach $btn_other as $key=>$vo }
+                {$vo|raw|default=''}
+              {/foreach}
+            </div>
+          </div>
+          {else /}
+            {$empty_data}
+          {/if}
+        </form>
+
+      </div>
+       <!--  额外HTML代码 -->
+       {$other_html_bottom|raw|default=''}
+    </div>
+  </div>
+</div>
+
+
+<script>
+  //Demo
+  layui.use('form', function(){
+    var form = layui.form;
+   // var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+   {if $layer == true }
+    var indexs = true;
+   {else/}
+   var indexs = false;
+   {/if}
+   {$other_js|raw|default=''}
+   form.render();
+   var tags =  $('.tags').tagsInput();
+   // 额外的J 
+   
+    //监听提交
+    form.on('submit(formDemo)', function(data){
+      var formdata = {};
+      for(var i in data.field){
+   
+       formdata[i] = data.field[i];
+  
+      }
+      var ckcontent = '';
+      if(typeof CKEDITOR != 'undefined'){
+        ckeditdata  = CKEDITOR.instances.ckeditor.getData();
+        ckcontent = $("#ckeditor").attr('name');
+        formdata[ckcontent] = ckeditdata;
+      }
+      
+      miappcms.submit('{$form_url}','{$form_method}',formdata,indexs);
+      return false;
+    });
+  });
+</script>

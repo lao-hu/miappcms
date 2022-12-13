@@ -1,0 +1,95 @@
+<div class="miappcms-containers over">
+    <div class="row ">
+        <blockquote class="layui-elem-quote  mart20 marb0">
+            <span class="template_title"> {$template_title} : {$file_name} </span>
+            <a href="{:url('index')}?file={$file_dir}" class="layui-btn layui-btn-sm miappcms-btn-success template-refresh" ><i class="fa fa-reply"></i> 返回 </a>
+          
+          </blockquote>
+    </div>
+    
+    <div class="layui-row over">
+        <div class="layui-col-md12 mart20 marb50">
+            <form action='{$form_url}' method="post" class="layui-form layui-form-pane layui-form-actions">
+                <input type="hidden" name="file_dir" value="{$file_dir}">
+               {if $file_type == "add"}
+                <div class="marb20">
+                    <div class="layui-form-item marb0 miappcms-form-element">
+                        <label class="layui-form-label "> 
+                            <span class="yd">*</span> 文件名： 
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="file_name" placeholder="请输入要添加文件名" autocomplete="off" class="layui-input" value="{$file_name}" lay-reqtext="请输入" id="file_name" required="" lay-verify="required">
+                        </div>
+                        <div class="miappcms-form-desc marb0">
+                            <i class="fa fa-info-circle"></i> 请输入你要新建html文件，文件后缀是可以省略的，如：index.htm 改成 index  </div>
+                        </div>
+                </div>
+                  
+                    <div class="marb20">
+                        <div class="layui-form-item marb0 miappcms-form-element" >
+                            <label class="layui-form-label "> 文件后缀： </label>
+                            <div class="layui-input-inline miappcms-input-radio">
+                                <input type="radio" name="file_ext" value="html" title="html"  checked  >
+                            </div>
+                        </div>
+                    </div>
+                {else /}
+                <input type="hidden" name="file_name" value="{$file_name}">
+
+                {/if}
+                    <!-- 内容 -->
+                    <div class="marb20">
+                        <div class="layui-form-item  marb20 miappcms-form-element">
+                            <label class="layui-form-label ">内容： </label>
+                            <div class="layui-input-inline" >
+                                <textarea name="file_content" id="miappcms-codemirror" class="layui-textarea">{$file_content}</textarea>
+                            </div>
+                         </div>
+                    </div>
+                    <div class="layui-form-item marb20 mi-forms-btns">
+                        <div class="layui-input-block ">
+                            <button class="layui-btn" lay-submit lay-filter="formDemo" >立即提交</button>
+                            <button type="reset"  class="layui-btn layui-btn-primary "  >重置</button>
+                        </div>
+                    </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        // CodeMirror
+        var codeEditor =  CodeMirror.fromTextArea(document.getElementById("miappcms-codemirror"), {
+            mode: "htmlmixed",     // 编辑器语言
+            theme: "{$mi_code_theme}",   // 编辑器主题
+            lineNumbers: true,              // 显示行号
+            showCursorWhenSelecting: true,  // 文本选中时显示光标
+            lineWrapping: true,             // 代码折叠
+        });
+        codeEditor.setSize("auto",'{$mi_code_height}');
+    })
+    </script>
+<script>
+    //Demo
+    layui.use('form', function(){
+      var form = layui.form;
+     form.render();
+     
+      //监听提交
+      form.on('submit(formDemo)', function(data){
+        // var formdata = {};
+        // for(var i in data.field){
+        //  formdata[i] = data.field[i];
+        // }
+        // var ckcontent = '';
+        // if(typeof CKEDITOR != 'undefined'){
+        //   ckeditdata  = CKEDITOR.instances.ckeditor.getData();
+        //   ckcontent = $("#ckeditor").attr('name');
+        //   formdata[ckcontent] = ckeditdata;
+        // }
+
+        // miappcms.submit('{$form_url}','post',formdata,false);
+        return true;
+      });
+    });
+  </script>

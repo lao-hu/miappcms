@@ -1,0 +1,10 @@
+{__NOLAYOUT__}
+
+{notempty name="$fieldTab"}
+<select id="tab_id" name="tab_id">
+    <option value="">请选择选项</option>
+    {volist name="fieldTab" id="val"}
+        <option value="{$val.id}" {if $tid == $val.id} selected {/if}>[{$val.module_id}] ▶ {$val.name}</option>
+    {/volist}
+</select>
+{/notempty}

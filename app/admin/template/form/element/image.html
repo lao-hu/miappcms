@@ -1,0 +1,72 @@
+<div class="marb20">
+    <div class="layui-form-item marb0">
+        <label class="layui-form-label "> 
+            {if $form[keyword].required == 1}
+                <span class="yd">*</span> 
+            {/if}
+            {$form[keyword].title}： 
+        </label>
+        <div class="layui-input-inline" style="width: 780px">
+            <div class="layui-input-inline" style="width: 580px;">
+                <input type="text" id="{$form[keyword].name}" name="{$form[keyword].name}"  placeholder="{$form[keyword].placeholder}" autocomplete="off" class="layui-input" value="{$form[keyword].value}" {if $form[keyword].required == 1} required  lay-verify="required" lay-reqText="请上传" {/if}>
+            </div>
+            <div class="layui-input-inline" style="width: 85px;">
+                <a href="javascript:;" id="miupload-btn-{$form[keyword].name}" class="layui-btn miupload-btn-{$form[keyword].name}"><i class="layui-icon layui-icon-upload"></i>上传</a>
+            </div>
+            <div class="preview">
+                <a {notempty name="$form[keyword].value"} href="{$form[keyword].value}" {/notempty} class="preview-a-{$form[keyword].name}" title="点击图片查看大图" target="_blank">
+                    <img src="{$form[keyword].value}" alt="" class="preview-img-{$form[keyword].name}" width="86" height="38" {empty name="$form[keyword].value"} style="display:none" {/empty}>
+                </a>
+            </div>
+        </div>
+        
+    </div>
+    {notempty name="form.tips"}
+    <div class="miappcms-form-desc marb0">
+        <i class="fa fa-info-circle"></i> {$form[keyword].tips}
+    </div>
+    {/notempty}
+</div>
+<script>
+    layui.use('upload', function(){
+      var upload = layui.upload;
+       
+      //执行实例
+      var uploadInst = upload.render({
+        elem: '#miupload-btn-{$form[keyword].name}' //绑定元素
+        ,url: '{:url("uploads/index")}' //上传接口
+        ,accept:'images'
+        ,auto:true
+        ,data:{
+            'up_type':'image' // 类型
+           ,'upload_ext':'{$form[keyword].ext}' // 上传类型
+           ,'upload_size':'{$form[keyword].size}'
+        }
+        ,size:'{$form[keyword].size}' // 上传大小
+        ,exts:'{$form[keyword].ext}'
+        ,before:function(obj){
+             //预读本地文件示例，不支持ie8
+            obj.preview(function(index, file, result){
+              $('.preview-img-{$form[keyword].name}').css('display','block').attr('src',result); //图片链接（base64）
+           
+            });
+        }
+        ,done: function(res){
+            if(res.code == 1){
+                $("#{$form[keyword].name}").val(res.path);
+                $(".preview-a-{$form[keyword].name}").attr('href',res.path);
+                miappcms.msg(res.msg,res.status);
+             
+            }else{
+                miappcms.alerterror(res.error);
+            }
+          //上传完毕回调
+       
+        }
+        ,error: function(err){
+          //请求异常回调
+          miappcms.alerterror('网络错误');
+        }
+      });
+    });
+    </script>

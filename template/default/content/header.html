@@ -1,0 +1,62 @@
+
+<!-- header -->
+<header class="header-two">
+                <div class="header-top"> 
+                <div class="container"> 
+                <div class="row"> 
+                <div class="col-lg-6 col-md-6 col-sm-5 hidden-xs">
+                    <span>24小时客户服务热线：{$system.company_mobile}</span> 
+                </div> 
+                <div class="col-lg-6 col-md-6 col-sm-7 col-xs-12">
+                    <div class="header-top-right"> 
+                    <span>Phone: {$system.company_phone}</span> 
+                    <span>Email: {$system.company_email}</span>
+                    <span class="login">
+                        <i class="zmdi zmdi-account"></i>
+                        <a href="{:url('user/index')}">{$Request.session.user.email|default="用户中心"}</a>
+                    </span>
+                    </div> 
+                </div> 
+                </div> 
+                </div> 
+                </div>
+                <div class="header-logo-menu sticker"> 
+                    <div class="container"> 
+                        <div class="row">
+                            <div class="col-md-4 col-sm-12"> 
+                                <div class="logo"> 
+                                <a href="/"><img src="{$system.logo}" alt="{$system.name}" /></a> 
+                                </div> 
+                            </div> 
+                            <div class="col-md-8"> 
+                                <div class="mainmenu-area pull-right"> 
+                                <div class="mainmenu hidden-sm hidden-xs">
+                                    <nav> 
+                                        <ul id="nav"> 
+                                            <li  class="{if empty($cate.top_id)} current {/if} "><a href="/">首 页</a></li>
+                                            {miappcms:nav return= 'val'}
+                                                <li class="{if $val.id == $cate.top_id } current {/if}"  ><a data-id="nav_key_{$key}" href="{$val.url}">{$val.cate_name} </a>
+                                                {if !empty($val.child)}
+                                                    <ul class="sub-menu">
+                                                        {volist name="val.child" id="child"}
+                                                        <li><a data-id="nav_sub_key_{$key}" href="{$child.url}">{$child.cate_name}</a></li>
+                                                        {/volist}
+                                                    </ul>
+                                                {/if}
+                                            {/miappcms:nav}
+
+                                            <!--
+                                                <ul class="sub-menu">
+                                                <li><a data-id="nav_sub_key_0" href="/index/introduction.html">公司介绍</a></li>
+                                                <li><a data-id="nav_sub_key_1" href="/index/culture.html">公司文化</a></li>
+                                                </ul>
+                                            </li>  -->
+                                        </ul> 
+                                    </nav> 
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+</header>

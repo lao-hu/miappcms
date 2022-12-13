@@ -1,0 +1,24 @@
+{if $layer == false}
+    {if $pjax == false}
+        {include file="public:header" /}
+        {include file="public:left" /}
+        <div class="layui-body miappcms-main-boay" >
+            <div class="miappcms-main-boay-content">
+                {include file="public:breadcrumb" /}
+                {__CONTENT__}
+            </div>
+        </div>
+        {include file="public:footer" /}
+    {else /}
+        {include file="public:breadcrumb" /}
+        {__CONTENT__}
+    {/if}
+{else /}
+    {include file="public:header" /}
+    <div class="layui-body miappcms-main-boay " >
+        <div class="miappcms-main-boay-content">
+            {__CONTENT__}
+        </div>
+    </div>
+    {include file="public:footer" /}
+{/if}

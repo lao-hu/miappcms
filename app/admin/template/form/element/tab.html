@@ -1,0 +1,82 @@
+<!-- 选项卡 -->
+<div class="miappcms-tab marl20 ">
+    <div class="layui-tab">
+        <ul class="layui-tab-title">
+         {volist name="form.options" id="info" key="k"}
+             <li class="{if $k == 1} layui-this {/if}">{$key|raw}</li>
+         {/volist}
+        </ul>
+        <div class="layui-tab-content">
+        {volist name="form.options" id="item" key="k" }
+            <div class="layui-tab-item {if $k == 1} layui-show {/if}">
+                {volist name="item" id="form_mikey"}
+                    {switch form_mikey.type}
+                        {case hidden}
+                        <!-- 隐藏域-->
+                        {include file="form/element/hidden" keyword='_mikey' /}
+                        {/case}
+                        {case text}
+                            <!-- 单行文本 -->
+                            {include file="form/element/text" keyword='_mikey' /}
+                        {/case}
+                        {case textarea}
+                            <!-- 多行文本 -->
+                            {include file="form/element/textarea" keyword='_mikey' /}
+                        {/case}
+                        {case select}
+                         <!-- 下拉菜单 -->
+                         {include file="form/element/select" keyword='_mikey' /}
+                        {/case}
+                       
+                        {case radio}
+                            <!-- 单选按钮 -->
+                            {include file="form/element/radio" keyword='_mikey' /}
+                        {/case}
+                        {case checkbox}
+                            <!-- 多选按钮 -->
+                            {include file="form/element/checkbox" keyword='_mikey' /}
+                        {/case}
+                        {case image}
+                            <!-- 单图片 -->
+                            {include file="form/element/image" keyword='_mikey' /}
+                        {/case}
+                        {case images}
+                            <!-- 多图片 -->
+                            {include file="form/element/images" keyword='_mikey' /}
+                        {/case}
+                        {case number}
+                        <!-- 数字 -->
+                        {include file="form/element/number" keyword='_mikey' /}
+                       {/case}
+                       {case password}
+                        <!-- 密码 -->
+                        {include file="form/element/password" keyword='_mikey' /}
+                       {/case}
+                        {case editor}
+                            <!-- 编辑器 -->
+                            {include file="form/element/editor" keyword='_mikey'/}
+                        {/case}
+                        {case date}
+                            <!-- 年月日 -->
+                            {include file="form/element/date" keyword='_mikey'/}
+                        {/case}
+                        {case time}
+                        <!-- 时分秒 -->
+                            {include file="form/element/time" keyword='_mikey'/}
+                        {/case}
+                        {case datetime}
+                        <!-- 年月日时分秒 -->
+                            {include file="form/element/datetime" keyword='_mikey'/}
+                        {/case}
+                        {case pinyin}
+                        <!-- 拼音 -->
+                        {include file="form/element/pinyin" keyword='_mikey'}
+                        {/case}
+                    {/switch}
+                {/volist}
+            </div>
+            
+        {/volist}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,84 @@
+<div class="miappcms-container">
+    <div class="layui-row">
+      <div class="layui-col-md12 marb50">
+        <div class="layui-row">
+          <div class="miappcms-dbtable">
+            <table class="layui-table" id="miappcms-table" lay-filter="miappcms-table-filter">
+                <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>文件名</th>
+                        <th>大小</th>
+                        <th>分隔符</th>
+                        <th>时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {if !empty($list)}
+                    {volist name="list" id="val" key="k"}
+                    <tr>
+                        <td>{$val.time}</td>
+                        <td>{$val.name}</td>
+                        <td>{$val.size|format_bytes}</td>
+                        <td>{$val.compress}</td>
+                        <td>{$key}</td>
+                        <td>
+                            <button id="revertdata" data-href="{:url('revertdata')}?time={$val.time}" class="layui-btn layui-btn-sm layui-btn-danger miappcms-btn-primary"><i class="fa fa-history" aria-hidden="true"></i> 还原数据表</button>
+                            <a href="{:url('download')}?time={$val.time}" class="layui-btn layui-btn-sm layui-btn-danger miappcms-btn-success"><i class="fa fa-cloud-download" aria-hidden="true"></i> 下载</a>
+                            <button id="del" data-href="{:url('del')}?id={$val.time}" class="layui-btn layui-btn-sm layui-btn-danger miappcms-btn-danger"><i class="fa fa-trash-o" aria-hidden="true"></i> 删除</button>
+                        </td>
+                    </tr>
+                    {/volist}
+                    {else/}
+                     <tr>
+                        <td colspan="6"> <span style="display: block;text-align: center;">没有找到相关数据 </span> </td>
+                     </tr>
+                    {/if}
+                </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    $("#revertdata").on('click',function(){
+        var url = $(this).attr('data-href');
+        $.get(url,function(data,status,xhr){
+            if(status === 'error'){
+                miappcms.alerterror("网络错误");
+            }
+            if(data.code === 1){
+                layer.msg(data.msg, {icon: 6,time:2000},function(index){
+                     window.location.reload();
+                }); 
+            }else{
+                miappcms.alerterror(data.msg,"error");
+            }
+        });
+    });
+    $("#del").on('click',function(){
+        var url = $(this).attr('data-href');
+        layer.confirm('警告!!!：确定删除该条数据吗？', {
+                    icon: 3, 
+                    title: "系统提示",
+        			btn: ['提交', '取消']
+            }, function(index){
+                $.get(url,function(data,status,xhr){
+                    if(status === 'error'){
+                        miappcms.alerterror("网络错误");
+                    }
+                    if(data.code === 1){
+                        layer.msg(data.msg, {icon: 6,time:2000},function(index){
+                            window.location.reload();
+                        }); 
+                    }else{
+                        miappcms.alerterror(data.msg,"error");
+                    }
+                        
+                });
+                layer.close(index);
+            });
+    });
+  </script>

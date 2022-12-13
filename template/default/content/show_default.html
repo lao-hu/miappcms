@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="{$keywords}" />
+    <meta name="description" content="{$description}" />
+    <title>{$title}</title>
+    {include file='css' /}
+</head>
+<body>
+<div class="as-mainwrapper">
+    <!--Bg White Start-->
+    <div class="bg-white">
+        {include file='header' /}
+        <!-- breadcrumb -->
+        <div class="breadcrumb-banner-area" style="background:url('{$cate.image}') no-repeat scroll 0 0">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="breadcrumb-text">
+                            <h1 class="text-center"> {$cate.summary} </h1>
+                            <div class="breadcrumb-bar">
+                                <ul class="breadcrumb text-center">
+                                    <li><a href="/">首页</a></li>
+                                    {if !empty($parent_cate)}
+                                    <li><a href="{$parent_cate.url}">{$parent_cate.cate_name}</a></li>
+                                    {/if}
+                                    <li><a href="{$cate.url}">{$cate.cate_name}</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- breadcrumb -->
+        <div class="news-details-area section-padding">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-9 col-md-8">
+                        <div class="news-details-content">
+                            <div class="single-latest-item">
+                                <!--<img src="img/details/2.jpg" alt="">-->
+                                <div class="single-latest-text">
+                                    <h3>{$title|raw}</h3>
+                                    <div class="single-item-comment-view">
+                                        <span><i class="zmdi zmdi-calendar-check"></i>{$create_time|date="Y-m-d H:i:s"}</span>
+                                        <span><i class="zmdi zmdi-eye"></i>0</span>
+                                        <span><i class="zmdi zmdi-pin-account"></i>{$author}</span>
+                                        <span>
+                                        	<i class="zmdi zmdi-label"></i>
+                                                <a href="" target="_blank"></a>
+                                        </span>
+
+                                    </div>
+                                    {$content|raw}
+                                    <div class="tags-and-links">
+                                        <div class="related-tag">
+                                            <span>上一篇:</span>
+                                             {miappcms:prev /}
+                                        </div>
+                                        <div class="related-tag floatright">
+                                            <span>下一篇:</span>
+                                            {miappcms:next /}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4">
+                        {include file='sidebar'/}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {include file='footer' /}
+    </div>
+</div>
+{include file='js' /}
+</body>
+</html>

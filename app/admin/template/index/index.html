@@ -1,0 +1,268 @@
+<style>
+    .welcome .layui-card {border:1px solid #f2f2f2;border-radius:5px;}
+    .welcome .icon {margin-right:10px;color:#1aa094;}
+    .welcome .icon-cray {color:#ffb800 !important;}
+    .welcome .icon-blue {color:#1e9fff !important;}
+    .welcome .icon-tip {color:#ff5722 !important;}
+    .welcome .layuimini-qiuck-module {text-align:center;margin-top:10px}
+    .welcome .layuimini-qiuck-module a i {display:inline-block;width:100%;height:60px;line-height:60px;text-align:center;border-radius:2px;font-size:30px;background-color:#F8F8F8;color:#333;transition:all .3s;-webkit-transition:all .3s;}
+    .welcome .layuimini-qiuck-module a cite {position:relative;top:2px;display:block;color:#666;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;font-size:14px;}
+    .welcome .welcome-module {width:100%;height:210px;}
+    .welcome .panel {background-color:#fff;border:1px solid transparent;border-radius:3px;-webkit-box-shadow:0 1px 1px rgba(0,0,0,.05);box-shadow:0 1px 1px rgba(0,0,0,.05)}
+    .welcome .panel-body {padding:10px}
+    .welcome .panel-title {margin-top:0;margin-bottom:0;font-size:12px;color:inherit}
+    .welcome .label {display:inline;padding:.2em .6em .3em;font-size:75%;font-weight:700;line-height:1;color:#fff;text-align:center;white-space:nowrap;vertical-align:baseline;border-radius:.25em;margin-top:.3em;}
+    .welcome .layui-red {color:red}
+    .welcome .main_btn > p {height:40px;}
+    .welcome .layui-bg-number {background-color:#F8F8F8;}
+    .welcome .layuimini-notice:hover {background:#f6f6f6;}
+    .welcome .layuimini-notice {padding:7px 16px;clear:both;font-size:12px !important;cursor:pointer;position:relative;transition:background 0.2s ease-in-out;}
+    .welcome .layuimini-notice-title,.layuimini-notice-label {padding-right:70px !important;text-overflow:ellipsis !important;overflow:hidden !important;white-space:nowrap !important;}
+    .welcome .layuimini-notice-title {line-height:28px;font-size:14px;}
+    .welcome .layuimini-notice-extra {position:absolute;top:50%;margin-top:-8px;right:16px;display:inline-block;height:16px;color:#999;}
+</style>
+
+<div class="miappcms-container welcome">
+    <div class="layui-row layui-col-space15" >
+        <div class="layui-col-md8">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md6">
+                    <div class="layui-card">
+                        
+                        <div class="layui-card-header"><i class="fa fa-warning icon"></i>数据统计</div>
+                        <div class="layui-card-body">
+                            <div class="welcome-module">
+                                <div class="layui-row layui-col-space10">
+                                    <div class="layui-col-xs6">
+                                        <div class="panel layui-bg-number">
+                                            <div class="panel-body">
+                                                <div class="panel-title">
+                                                    <span class="label pull-right layui-bg-blue">实时</span>
+                                                    <h5>管理员统计</h5>
+                                                </div>
+                                                <div class="panel-content">
+                                                    <h1 class="no-margins"> {$user_count} </h1>
+                                                    <small>当前管理员总记录数 </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-col-xs6">
+                                        <div class="panel layui-bg-number">
+                                            <div class="panel-body">
+                                                <div class="panel-title">
+                                                    <span class="label pull-right layui-bg-orange">实时</span>
+                                                    <h5>模块统计</h5>
+                                                </div>
+                                                <div class="panel-content">
+                                                    <h1 class="no-margins"> {$model_count} </h1>
+                                                    <small>当前模块总记录数</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-col-xs6">
+                                        <div class="panel layui-bg-number">
+                                            <div class="panel-body">
+                                                <div class="panel-title">
+                                                    <span class="label pull-right layui-bg-cyan">实时</span>
+                                                    <h5>字段统计</h5>
+                                                </div>
+                                                <div class="panel-content">
+                                                    <h1 class="no-margins"> {$field_count} </h1>
+                                                    <small>当前字段总记录数</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-col-xs6">
+                                        <div class="panel layui-bg-number">
+                                            <div class="panel-body">
+                                                <div class="panel-title">
+                                                    <span class="label pull-right layui-bg-green">实时</span>
+                                                    <h5>栏目统计</h5>
+                                                </div>
+                                                <div class="panel-content">
+                                                    <h1 class="no-margins"> {$cate_count} </h1>
+                                                    <small>当前栏目总记录数</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md6">
+                    <div class="layui-card">
+                        <div class="layui-card-header"><i class="fa fa-credit-card icon icon-blue"></i>快捷入口</div>
+                        <div class="layui-card-body">
+                            <div class="welcome-module">
+                                <div class="layui-row layui-col-space10 layuimini-qiuck">
+                                    <div class="layui-col-xs3 layuimini-qiuck-module">
+                                        <a href="{:url('MenuRule/index')}" >
+                                            <i class="fa fa-window-maximize"></i>
+                                            <cite>菜单规则</cite>
+                                        </a>
+                                    </div>
+                                    <div class="layui-col-xs3 layuimini-qiuck-module">
+                                        <a href="{:url('SystemConfig/listop')}" >
+                                            <i class="fa fa-gears"></i>
+                                            <cite>系统设置</cite>
+                                        </a>
+                                    </div>
+                                    <div class="layui-col-xs3 layuimini-qiuck-module">
+                                        <a href="{:url('Admin/index')}" >
+                                            <i class="fa fa-user"></i>
+                                            <cite>用户管理</cite>
+                                        </a>
+                                    </div>
+                                    <div class="layui-col-xs3 layuimini-qiuck-module">
+                                        <a href="{:url('Module/index')}">
+                                            <i class="fa fa-th-list"></i>
+                                            <cite>模块管理</cite>
+                                        </a>
+                                    </div>
+                                    <div class="layui-col-xs3 layuimini-qiuck-module">
+                                        <a href="{:url('Field/index')}">
+                                            <i class="fa fa-cube"></i>
+                                            <cite>字段管理</cite>
+                                        </a>
+                                    </div>
+                                    <div class="layui-col-xs3 layuimini-qiuck-module">
+                                        <a href="{:url('Cate/index')}" >
+                                            <i class="fa fa-bars"></i>
+                                            <cite>栏目管理</cite>
+                                        </a>
+                                    </div>
+                                    <div class="layui-col-xs3 layuimini-qiuck-module">
+                                        <a href="{:url('Template/index')}" >
+                                            <i class="fa fa-code"></i>
+                                            <cite>模板管理</cite>
+                                        </a>
+                                    </div>
+                                    <div class="layui-col-xs3 layuimini-qiuck-module">
+                                        <a href="{:url('Database/index')}" >
+                                            <i class="fa fa-tasks"></i>
+                                            <cite>数据库管理</cite>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header"><i class="fa fa-cog icon"></i> 系统信息</div>
+                        <div class="layui-card-body layui-text">
+                            <table class="layui-table">
+                                <colgroup>
+                                    <col width="200">
+                                    <col>
+                                </colgroup>
+                                <tbody>
+                                    <tr>
+                                        <td>作者：</td>
+                                        <td>{$miappcms.author}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>网站系统名称：</td>
+                                        <td>MIAPPCMS V{$miappcms.version}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>当前框架版本：</td>
+                                        <td>ThinkPHP {$config.tpversion}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>当前PHP版本：</td>
+                                        <td>PHP {$config.php_version}</td>
+                                    </tr> 
+                                    <tr>
+                                        <td>MySQL版本：</td>
+                                        <td>{$config.mysql_version}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>服务器操作系统：</td>
+                                        <td>{$config.server_os}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>服务器解译引擎：</td>
+                                        <td>{$config.server_soft}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>文件上传大小限制：</td>
+                                        <td>{$config.max_upload_size}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md4">
+            <div class="layui-card">
+                <div class="layui-card-header"><i class="fa fa-bullhorn icon icon-tip"></i>管理员日志</div>
+                <div class="layui-card-body layui-text">
+                    <div class="layuimini-notice">
+                        <div class="layuimini-notice-title">欢迎 <span style="color: #FF5722;">[{$user_info.admin.nickname|default='匿名'}]</span> 账号，登录成功</div>
+                        <div class="layuimini-notice-extra">{$user_info.admin.usertime}</div>
+                    </div>
+                    <div class="layuimini-notice">
+                        <div class="layuimini-notice-title">登录IP: <span style="color: #FF5722;">[{$user_info.admin.ip}]</span>
+                        </div>
+                        <div class="layuimini-notice-extra">{$user_info.admin.usertime}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-card">
+                <div class="layui-card-header"><i class="fa fa-fire icon"></i>版本信息</div>
+                <div class="layui-card-body layui-text">
+                    <table class="layui-table">
+                        <colgroup>
+                            <col width="100">
+                            <col>
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <td>作者</td>
+                            <td>{$miappcms.author}</td>
+                        </tr>
+                        <tr>
+                            <td>框架名称</td>
+                            <td>{$miappcms.name} </td>
+                        </tr>
+                        <tr>
+                            <td>当前版本</td>
+                            <td>v{$miappcms.version}</td>
+                        </tr>
+                        <tr>
+                            <td>基于框架</td>
+                            <td>ThinkPHP {$config.tpversion} + Layui</td>
+                        </tr>
+                        <tr>
+                            <td>获取手册</td>
+                            <td>
+                               <a href="https://www.kancloud.cn/manual/thinkphp6_0/" target="_blank" class="layui-btn layui-btn-warm">ThinkPHP {$config.tpversion}</a>
+                               <a href="https://gitee.com/sentsin/layui?_from=gitee_search" target="_blank" class="layui-btn layui-btn-normal">Layui</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="layui-card">
+                <div class="layui-card-header"><i class="fa fa-paper-plane-o icon"></i>作者</div>
+                <div class="layui-card-body layui-text layadmin-text">
+                    <p>MIAPPCMS 基于 ThinkPHP 6.0.12LTS + Layui 开发 <br />
+                      后台界面借鉴的 layuimini
+                    </p>
+                    <small>--<cite class="text-muted"> 感谢您的使用！</cite></small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

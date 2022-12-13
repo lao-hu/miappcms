@@ -1,0 +1,70 @@
+<!-- 模板 -->
+<style>
+    .layui-table-cell{
+        height:38px;
+        line-height: 38px;
+    }
+  </style>
+<div class="miappcms-container">
+    <div class="layui-row">
+        <div class="layui-col-md12">
+            <div >
+                <a href="{:url('add')}?file={$file}" class="layui-btn layui-btn-sm miappcms-btn-success template-adds"><i class="fa fa-plus"></i> 新建页面</a>
+             
+                <button class="layui-btn layui-btn-sm miappcms-btn-waring template-refresh" onclick="window.location.reload()"><i class="fa fa-refresh"></i> 更新 </button>
+            </div>
+            <table class="layui-table miappcms-template">
+                <colgroup>
+                    <col>
+                    <col width="300">
+                    <col width="150">
+                    <col width="300">
+                    <col width="300">
+                  </colgroup>
+                <thead>
+                    <tr>
+                        <th>目录列表</th>
+                        <th>描述</th>
+                        <th>大小</th>
+                        <th>更新时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- 返回上一级 -->
+                    {if $level}
+                        <tr><td colspan="5" class="place"> <a href="{:url('template/index')}?file={$up_level_dir}" > <img src="/static/assets/image/upback.gif" alt="file" width="40" > <span class=""> 返回上一级目录 </span> </a> </tr>
+                    {/if}
+                    <!-- 文件夹 -->
+                    {volist name="template_dir" id="val"}
+                        <tr><td colspan="5" class="place"> <a href="{:url('template/index')}?file={$file}{$val.name}/" > <img src="{$val.icon}" alt="file" width="40" > <span class=""> {$val.name} </span> </a> </tr>
+                    {/volist}
+                    <!-- 文件 -->
+                   {volist name="template_filename" id="val"}
+                        <tr>
+                            <td class="icons {$val.type}">
+                            <img src="{$val.icon}" alt="file" width="18" > <span class=""> {$val.name} </span>
+                            </td>
+                            <td>{$val.desc}</td>
+                            <td>{$val.size}</td>
+                            <td>{$val.time}</td>
+                            <td>
+                                <a href="{:url('edit')}?file={$file}&filename={$val.name}" class="layui-btn layui-btn-sm layui-btn-normal template-edits" style="line-height: 28px;"><i class="fa fa-pencil-square-o"></i> 编辑</a> 
+                                <button data-name="{$val.name}" class="layui-btn layui-btn-sm layui-btn-danger template-dels" lay-event="del" style="line-height: 28px;"><i class="fa fa-trash-o"></i> 删除</button>
+                            </td>
+                        </tr>
+                   {/volist}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+
+$(".template-dels").on('click',function(){
+   var name =  $(this).attr('data-name');
+   miappcms.commondel('{:url("filedel")}?file={$file}&file_name='+name,'确定要删除模板文件，请确保已经做好备份');
+});
+
+</script>

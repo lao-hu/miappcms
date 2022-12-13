@@ -1,0 +1,22 @@
+
+<div class="marb20">
+    <div class="layui-form-item marb0 miappcms-form-element[keyword]" >
+        <label class="layui-form-label "> 
+            {if $form[keyword].required == 1}
+                <span class="yd">*</span> 
+            {/if}
+            {$form[keyword].title}： 
+        </label>
+        <div class="layui-input-inline miappcms-input-radio">
+           {volist name="form[keyword].options" id="val"}
+            <input type="radio" name="{$form[keyword].name}" value="{$key}" title="{$val}" {if $form[keyword].value == $key } checked  {/if} >
+           {/volist}
+        </div>
+         {notempty name="form[keyword].tips"}
+        <div class="miappcms-form-desc marb0">
+            <i class="fa fa-info-circle"></i> {$form[keyword].tips}
+        </div>
+        {/notempty}
+    </div>
+   
+</div>

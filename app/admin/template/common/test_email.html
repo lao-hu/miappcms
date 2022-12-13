@@ -1,0 +1,37 @@
+<div class="miappcms-containers">
+    <div class="layui-row">
+        <div class="layui-col-md12">
+            <div class="miappcms-form mart20">
+                <form action='{:url("emailSend")}' method="post" class="layui-form layui-form-pane layui-form-actions">
+                    <div class="layui-form-item marb0" >
+                        <label class="layui-form-label"> <span class="yd">*</span> 邮箱地址：</label>
+                          <div class="layui-input-block">
+                              <input type="text" name="test_email" placeholder="请输入测试邮箱地址" required lay-verify="email" lay-reqText="请输入合法邮箱地址" autocomplete="off" class="layui-input" value="">
+                          </div>
+                    </div>
+                 
+                    <div class="layui-form-item marb20 mi-forms-btns">
+                        <div class="layui-input-block ">
+                          <button class="layui-btn {if $layer == true }layui-hide {/if}" lay-submit lay-filter="formDemo" >立即提交</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['table','form'], function(){
+        var table = layui.table,
+       form = layui.form;
+         //监听提交
+      form.on('submit(formDemo)', function(data){
+        var formdata = {};
+        for(var i in data.field){
+            formdata[i] = data.field[i];
+        }
+         miappcms.submit('{:url("emailSend")}','post',formdata);
+        return false;
+      });
+    });
+</script>

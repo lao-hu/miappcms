@@ -1,0 +1,96 @@
+{__NOLAYOUT__}
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>MiAPPCMS 后台登录界面</title>
+		<link rel="stylesheet" href="__PLUGINS__/layui-pear/component/pear/css/pear.css" />
+		<link rel="stylesheet" href="__PLUGINS__/layui-pear/admin/css/other/login.css" />
+        <style>
+            .unpassword a{color: #1391ff;}
+            input::input-placeholder{color:#666;}
+            input::-webkit-input-placeholder{color:#666;}
+            input::-moz-input-placeholder{color:#666;}
+            input:-moz-input-placeholder{color:#666;}
+            input:-ms-input-placeholder{color:#666;}
+        </style>
+        
+	</head>
+	<body background="__PLUGINS__/layui-pear/admin/images/background.svg" style="background-size: cover;">
+		<form class="layui-form" action="{:url('login')}" method="post">
+         <input type="hidden" name="ip" id="ip" value="">
+			<div class="layui-form-item">
+				<div class="title">MiAPPCMS </div>
+				<div class="desc">
+					MiAPPCMS 后台登录系统界面 -老胡开发
+				</div>
+			</div>
+			<div class="layui-form-item">
+                <input  type="text" name="user" placeholder="账 号" required  lay-verify="required" lay-reqText="请输入账号" hover class="layui-input"  autocomplete="off" />
+			</div>
+			<div class="layui-form-item">
+				<input type="password" name="pass" placeholder="密 码" required  lay-verify="required" lay-reqText="请输入密码" hover class="layui-input" autocomplete="off"  />
+			</div>
+            {if $verify_on == 1}
+			<div class="layui-form-item">
+				<input  type="text" name="code" placeholder="验证码 "  hover  required  lay-verify="required" lay-reqText="请输入验证码" class="code layui-input layui-input-inline"  />
+				<img src="{:captcha_src()}" width="120" id="codeImage" class="codeImage" onclick="this.src='{:captcha_src()}?'+Math.random();" />
+			</div>
+            {/if}
+			<div class="layui-form-item">
+                <div class="layui-input-inline" style="width:230px;">
+                    <input type="checkbox" name="" title="保持登录" lay-skin="primary" checked>
+                </div>
+                <div class="layui-form-mid unpassword"> <a href="javascript:;" class="layui-hide"> 忘记密码 </a></div>
+			</div>
+			<div class="layui-form-item">
+                <button class="layui-btn" lay-submit lay-filter="formDemo">登录</button>
+			</div>
+		</form>
+		<!-- 资 源 引 入 -->
+        <script src="__JS__/jquery-3.6.0.min.js"> </script>
+		<script src="__PLUGINS__/layui/layui.js"></script>
+  
+        <script>
+             
+            //Demo
+            layui.use(['form','layer'], function(){
+              var form = layui.form,
+              layer = layui.layer;
+              {if $verify_on == 1}
+                 layer.tips('点击验证码刷新', '#codeImage', {tips: 2,time:10000});
+              {/if}
+          
+
+              form.on('submit(formDemo)', function(data){
+                var formdata = {};
+                for(var i in data.field){
+                    formdata[i] = data.field[i];
+                }
+                $.ajax({
+                    type:"POST",
+                    dataType:"json",
+                    url:"{:url('login')}",
+                    data:formdata,
+                    success:function(datas){
+                        if(datas.code === 1){
+                            window.location.href = datas.url;
+                        }else if(datas.code === 2){
+                            $("#codeImage").attr("src",'{:captcha_src()}?'+Math.random());
+                            layer.alert(datas.msg, {icon: 2,title:'错误'});
+                        }else{
+                         layer.alert(datas.msg, {icon: 2,title:'错误'});
+                         return false;
+                        }
+                    },error:function(error){
+                      layer.alert("网络错误，请联系管理员", {icon: 2,title:'错误'});
+                      return false;
+                   }
+                });
+                
+                return false;
+              });
+            });
+        </script>
+	</body>
+</html>

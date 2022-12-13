@@ -1,0 +1,303 @@
+<style>
+  .layui-table-cell{
+      height:38px;
+      line-height: 38px;
+  }
+</style>
+<!-- 树形表格 -->
+<div class="miappcms-container">
+    <div class="layui-row">
+      <div class="layui-col-md12">
+        <div class="layui-row marb60">
+          <table id="miappcms-table" lay-filter="miappcms-table-filter"></table>
+         
+        </div>
+      </div>
+    </div>
+</div>
+<!-- 右侧按钮 -->
+<script type="text/html" id="miappcms-table-operate">
+  {volist name="rightButton" id="val"}
+  <button class="{$val.class}" lay-event="{$val.event}" style="line-height: 28px;"><i class="{$val.icon}"></i> {$val.title}</button>
+  {/volist}
+</script>
+<!-- 右侧按钮 -->
+<!-- 表头按钮 -->
+<script type="text/html" id="miappcms-table-header">
+    {volist name="topButton" id="val"}
+    <button class="{$val.class}" lay-event="{$val.event}" style="line-height: 28px;"><i class="{$val.icon}"></i> {$val.title}</button>
+    {/volist}
+</script>
+<!-- 表头 -->
+<script>
+    layui.use(['table','tableTreeDj'], function() {
+        const table = layui.table
+        const tableTree = layui.tableTreeDj;
+
+        const columns = [[
+            {type: 'checkbox',width:80}
+            {volist name="table_columns" id="val"}
+            {if $val.dict}
+              {if $val.type == 'radio'}
+                  ,{field: '$val.field',width:80, title: '{$val.title}',align:'center',templet:function(d){  
+                    var valuetype = d['{$val.field}'];
+                     {foreach $val.dict as $k => $v}
+                     if(valuetype == '{$k}'){
+                         return '<span class="layui-badge badge-btn-'+valuetype+'">{$val.dict[$k]}</span>';
+                     }
+                     {/foreach}       
+                  }}   
+              {/if}
+            {else/}
+                {if $val.field == $pk || $val.type == 'hidden'|| $val.field == 'icon'}
+                ,{field: '{$val.field}',width:60, title: '{$val.title}',align:'center'}
+                {elseif $val.field == 'create_time' || $val.field == 'update_time' }
+                ,{field: '{$val.field}',width:150, title: '{$val.title}',align:'center'}
+                {elseif $val.field == 'sort' /}
+                ,{field: '{$val.field}',width:60, title: '{$val.title}',align:'center',edit:'text',templet:function(d){
+                var valuesort = d['{$val.field}'];
+                return '<input type="text" name="{$val.field}" autocomplete="off" class="layui-input" value="'+ valuesort+'" style="width:56px;">';
+              }}
+             
+                {else /}
+                ,{field: '{$val.field}', title: '{$val.title}'}
+                {/if}
+            {/if}
+
+            {/volist}
+            ,{fixed: 'right', title: '操作',toolbar:'#miappcms-table-operate',align:'center'}
+            
+        ]];
+        const objTable = {
+            elem: '#miappcms-table'
+            ,url: '{:url("getlist")}'
+            ,toolbar: '#miappcms-table-header'
+            ,defaultToolbar: ['filter', 'exports' ]
+            ,text:{none: '没有找到相关数据'}
+            ,page:false
+            ,limit: 1000
+            ,cols: columns
+            ,id: 'miappcms-table'
+            ,loading:true
+        }
+
+        const objTree = {
+           
+           title: '{$keytitle}',
+           keyId: "{$keyid}",
+           keyPid: "{$keypid}",
+           indent: '&nbsp;&nbsp;|— ',
+           icon: {
+               open: 'layui-icon layui-icon-triangle-d &nbsp;', // 展开时候图标
+               close: 'layui-icon layui-icon-triangle-r &nbsp;', // 折叠时候图标
+           }
+           ,showCache: true //是否开启展开折叠缓存,默认不开启
+           ,defaultShow: true
+       }
+
+         //table.render(objTable)
+         tableTree.render(objTable, objTree);
+        tableTree.cache(tableTree.getShowCache(), []);
+        table.on('checkbox(miappcms-table-filter)', function(obj){
+          var check =  table.checkStatus('miappcms-table');
+          
+          var num = check.data;
+          var type = obj.type;
+          var checked = obj.checked;
+
+            if( type === 'all' && checked === true){
+              $(".disableds").removeClass("layui-btn-disabled"); 
+              $(".disableds[lay-event=edit]").addClass('layui-btn-disabled');
+              $(".disableds[lay-event=menubtn]").addClass('layui-btn-disabled')
+            }
+            if(num.length == 1){
+              $(".disableds").removeClass("layui-btn-disabled");   
+            }else if( num.length >= 2 ){
+            $(".disableds[lay-event=edit]").addClass('layui-btn-disabled');
+            
+            }else{
+              $(".disableds").addClass("layui-btn-disabled");
+            }
+      });      
+       
+        /* 表头事件 */
+      table.on('toolbar(miappcms-table-filter)',function(obj){
+        var checkStatus = table.checkStatus(obj.config.id);
+        var data = checkStatus.data;
+        var ids = '';
+        var row = [];
+     
+        // 返回 选择的字段数据
+        function fieldData(field){
+          for(var i=0;i<data.length;i++){
+            ids += data[i][field]+",";
+          
+          }
+          fields = ids.slice(0,ids.length-1);
+          return fields;
+        }
+
+        var btn = $(".disableds[lay-event='"+obj.event+"']").hasClass('layui-btn-disabled');
+        
+        switch(obj.event){
+          
+        {volist name="topButton" id="val"}
+        {if $val.event == 'add'}
+           case '{$val.event}':
+           if(btn === false){
+              {if empty($val.js)}
+                  var url = '{$val.href|raw}';
+                  var reg = /__(.*?)__/g;
+                  while(result = reg.exec(url)){
+                    url = url.replace(result[0],fieldData(result[1]));
+                  }
+                  {if $val.layer}
+                    miappcms.open('{$val.title}',url);
+                  {else/}
+                    miAppCmsLoads(url);
+                  {/if} 
+                {else/}
+                  {$val.js|raw}
+              {/if}
+            }
+           break;
+        {elseif $val.event == 'edit'}
+           case '{$val.event}':
+            if(btn === false){
+              {if empty($val.js)}
+                  var url = '{$val.href|raw}';
+                  var reg = /__(.*?)__/g;
+                  while(result = reg.exec(url)){
+                    url = url.replace(result[0],fieldData(result[1]));
+                  }
+                  {if $val.layer}
+                    miappcms.open('{$val.title}',url);
+                  {else/}
+                    miAppCmsLoads(url);
+                  {/if} 
+                {else/}
+                  {$val.js|raw}
+              {/if}
+            }
+            break;
+        {elseif $val.event == 'del'}
+            case '{$val.event}':
+            if(btn === false){
+              {if empty($val.js)}
+                  var url = '{$val.href|raw}';
+                  var reg = /__(.*?)__/g;
+                  while(result = reg.exec(url)){
+                    url = url.replace(result[0],fieldData(result[1]));
+                  }
+                  miappcms.delremove(url);
+                {else/}
+                  {$val.js|raw}
+              {/if}
+            }
+            break;
+        {else/}
+            case '{$val.event}':
+              {if empty($val.js)}
+                  var url = '{$val.href|raw}';
+                  var reg = /__(.*?)__/g;
+                  while(result = reg.exec(url)){
+                    url = url.replace(result[0],fieldData(result[1]));
+                  }
+                  
+                  {if $val.layer}
+                    miappcms.open('{$val.title}',url);
+                  {else/}
+                    miAppCmsLoads(url);
+                  {/if} 
+                {else/}
+                  {$val.js|raw}
+              {/if}
+              break;
+        {/if}   
+        {/volist}
+        }
+
+      });
+
+            /* 工具条 */
+    table.on('tool(miappcms-table-filter)',function (obj) {
+        var data = obj.data; //获得当前行数据
+        var event = obj.event;
+        
+        switch(event){
+          {volist name="rightButton" id="val"}
+          {if $val.event == 'edit'}
+          case '{$val.event}':
+            {if empty($val.js)}
+              var url = '{$val.href|raw}';
+              var reg = /__(.*?)__/g;
+              while(result = reg.exec(url)){
+                url = url.replace(result[0],data[result[1]]);
+              }
+              
+              {if $val.layer}
+                    miappcms.open('{$val.title}',url);
+              {else/}
+                    miAppCmsLoads(url);
+              {/if} 
+            {else/}
+              {$val.js|raw}
+            {/if}
+           break;
+          {elseif $val.event == 'del'}
+          case '{$val.event}':
+              {if empty($val.js)}
+                  var url = '{$val.href|raw}';
+                  var reg = /__(.*?)__/g;
+                  while(result = reg.exec(url)){
+                    url = url.replace(result[0],data[result[1]]);
+                  }
+                  
+                  miappcms.delremove(url);
+                {else/}
+                  {$val.js|raw}
+              {/if}
+            break;
+          {else /}
+            case '{$val.event}':
+              {if empty($val.js)}
+                  var url = '{$val.href|raw}';
+                  var reg = /__(.*?)__/g;
+                  while(result = reg.exec(url)){
+                    url = url.replace(result[0],data[result[1]]);
+                  }
+                  
+                  {if $val.layer}
+                    miappcms.open('{$val.title}',url);
+                  {else/}
+                    miAppCmsLoads(url);
+                  {/if} 
+                {else/}
+                  {$val.js|raw}
+              {/if}
+              break;
+          {/if}
+
+          {/volist}
+       
+        } 
+   
+      });
+
+    // 单元格编辑 
+    table.on('edit(miappcms-table-filter)', function(obj){ 
+        var val = obj.value, //得到修改后的值
+        field = obj.field,//当前编辑的字段名
+        data = obj.data; //所在行的所有相关数据 
+        if(!posInteger(val)){
+            miappcms.msg('请输入正整数','error');
+            return false;
+        }
+    
+      var url  = '{:url("editsort")}?id='+data.id+"&field="+field+"&fieldvalue="+val;
+    
+      miappcms.ajaxget(url);
+    });    
+
+});
+</script>

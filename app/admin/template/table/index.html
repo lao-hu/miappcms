@@ -1,0 +1,381 @@
+
+<style>
+  .layui-table-cell{
+      height:38px;
+      line-height: 38px;
+  }
+</style>
+<!-- 搜索 -->
+{include file="common/search" /}
+
+<div class="miappcms-container">
+    <div class="layui-row">
+      <div class="layui-col-md12 marb50">
+        <div class="layui-row">
+            {if  !empty($table_html_top)}
+              <blockquote class="layui-elem-quote miappcms-table-customize marb0">
+                {$table_html_top|raw|default=""}
+              </blockquote>
+           {/if}
+        </div>
+        <div class="layui-row">
+          <table id="miappcms-table" lay-filter="miappcms-table-filter"></table>
+        </div>
+      </div>
+    </div>
+</div>
+  <script type="text/html" id="miappcms-table-operate">
+    {volist name="rightButton" id="val"}
+     <button class="{$val.class}" lay-event="{$val.event}" style="line-height: 28px;"><i class="{$val.icon}"></i> {$val.title}</button>
+    {/volist}
+  </script>
+  <!--表头事件-->
+<script type="text/html" id="miappcms-table-header">
+    {volist name="topButton" id="val"}
+        {if $val.type == 'export'}
+        <!-- 导出 -->
+        <div class="layui-inline" style="width: 200px;">
+            <input type="text" class="layui-input" id="miappcms_exports" placeholder="请输入要导出的数据">
+        </div>
+        <a href="javascript:;"  class="{$val.class}" id="{$val.id}"  style="line-height: 28px;"><i class="{$val.icon}"></i> {$val.title}</a>
+        <a href="{:url('export')}?table={$table_name}&type=all" class="{$val.class}" id="{$val.id}_all" style="line-height: 28px;"><i class="{$val.icon}"></i> 导出全部数据</a>
+        {elseif $val.event == 'recommend' }
+            {$val.html|raw}
+            <button class="{$val.class}" id="{$val.id}" lay-event="{$val.event}" style="line-height: 28px;"><i class="{$val.icon}"></i> {$val.title}</button>
+        {else/}
+        <button class="{$val.class}" id="{$val.id}" lay-event="{$val.event}" style="line-height: 28px;"><i class="{$val.icon}"></i> {$val.title}</button>
+        {/if}
+    {/volist}
+    {if !empty($table_html_header)}
+        {$table_html_header|raw|default=""}
+    {/if}
+</script>
+  <script>
+   layui.use(['table','form','dropdown','laydate'], function(){
+      var table = layui.table
+      ,form = layui.form
+      ,dropdown = layui.dropdown
+      ,laydate = layui.laydate;
+
+      form.render(); 
+ 
+  var miappcms_table = table.render({
+        elem: '#miappcms-table'
+        ,id:'miappcms-table'
+        ,url: '{:url("getList")}' //数据接口
+        ,toolbar: '#miappcms-table-header' //开启头部工具栏，并为其绑定左侧模板
+        ,defaultToolbar: [
+          //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+          'filter', 
+         // 'exports' 
+        ]
+        ,title:'{:date("YmdHis")}'
+        ,text:{none: '没有找到相关数据'}
+        ,cols: [
+          [ //表头
+            {type: 'checkbox'}
+            {volist name="table_columns" id="val"}
+            
+            {if $val.dict}
+              {if $val.type == 'radio' || $val.type == 'select'}
+                  ,{field: '$val.field', title: '{$val.title}',align:'center',templet:function(d){  
+                    var valuetype = d['{$val.field}'];
+                     {foreach $val.dict as $k => $v}
+                     if(valuetype == '{$k}'){
+                         return '<span class="layui-badge badge-btn-'+valuetype+'">{$val.dict[$k]}</span>';
+                     }
+                     {/foreach}       
+                  },width:80}
+              {elseif $val.type == 'checkbox'  }
+                {if $val.field == 'top_button'}
+                ,{field: '$val.field', title: '{$val.title}',align:'center',templet:function(d){  
+                        var htmls = '';
+                      {foreach $val.dict as $k => $v}
+                      htmls += '<span class="layui-badge badge-btn-0" style="margin-right:5px;display: inline-block;">{$val.dict[$k]}</span>'; 
+                      {/foreach}       
+                      return htmls;
+                    },width:180}
+                {else /}
+                ,{field: '$val.field', title: '{$val.title}',align:'center',templet:function(d){  
+                        var htmls = '';
+                      {foreach $val.dict as $k => $v}
+                      htmls += '<span class="layui-badge badge-btn-0" style="margin-right:5px;display: inline-block;">{$val.dict[$k]}</span>'; 
+                      {/foreach}       
+                      return htmls;
+                    }}    
+                {/if}  
+              {/if}
+            {else /}
+
+              {if $val.field == $pk || $val.type == 'hidden' || $val.field == 'pk'}
+              ,{field: '{$val.field}',width:60, title: '{$val.title}',align:'center'}
+
+              {elseif $val.field == 'create_time' || $val.field == 'update_time' }
+              ,{field: '{$val.field}',width:140, title: '{$val.title}',align:'center'}
+              {elseif $val.type == 'image' || $val.type == 'images'}
+              ,{field: '{$val.field}', title: '{$val.title}',templet:function(d){
+                var img = d['{$val.field}'];
+                return '<a href="'+img+'" target="_blank"> <img src="'+img+'" alt="" width="38" /> </a>';
+              },align:'center'}
+              {elseif $val.field == 'sort' /}
+              ,{field: '{$val.field}',width:60, title: '{$val.title}',align:'center',edit:'text',templet:function(d){
+                var valuesort = d['{$val.field}'];
+                return '<input type="text" name="{$val.field}" autocomplete="off" class="layui-input" value="'+ valuesort+'" style="width:56px;">';
+              }}
+              {else /}
+              ,{field: '{$val.field}', title: '{$val.title}',align:'center'}
+              {/if}
+
+            {/if}
+            {/volist}
+            ,{fixed: 'right', title: '操作', toolbar:'#miappcms-table-operate',align:'center'}
+          ]
+        ]
+        ,page: true //开启分页
+        ,limit:10
+  
+  });
+
+    table.on('checkbox(miappcms-table-filter)', function(obj){
+    var check =  table.checkStatus('miappcms-table');
+    var num = check.data;
+    var type = obj.type;
+    var checked = obj.checked;
+      if( type === 'all' && checked === true){
+        $(".disableds").removeClass("layui-btn-disabled"); 
+        $(".disableds[lay-event=edit]").addClass('layui-btn-disabled');
+        $(".disableds[lay-event=menubtn]").addClass('layui-btn-disabled')
+      }
+      if(num.length == 1){
+        $(".disableds").removeClass("layui-btn-disabled");   
+        }else if( num.length >= 2 ){
+        $(".disableds[lay-event=edit]").addClass('layui-btn-disabled');
+        $(".disableds[lay-event=menubtn]").addClass('layui-btn-disabled');
+        }else{
+          $(".disableds").addClass("layui-btn-disabled");
+      }
+      
+});
+      /* 表头事件 */
+      table.on('toolbar(miappcms-table-filter)',function(obj){
+        var checkStatus = table.checkStatus(obj.config.id);
+        var data = checkStatus.data;
+        var ids = '';
+        var fields = '';
+       // 返回 选择的字段数据
+       function fieldData(field){
+          for(var i=0;i<data.length;i++){
+            ids += data[i][field]+",";
+          }
+          fields = ids.slice(0,ids.length-1);
+          return fields;
+        }
+        function fieldUrl(urls){
+          var url = urls;
+              var reg = /__(.*?)__/g;
+              while(result = reg.exec(url)){
+              url = url.replace(result[0],fieldData(result[1]));
+            }
+          return url;  
+        }
+
+        var btn = $(".disableds[lay-event='"+obj.event+"']").hasClass('layui-btn-disabled');
+        switch(obj.event){
+          {volist name="topButton" id="val"}
+          {if $val.event == 'add'}
+             case '{$val.event}':
+                {if empty($val.js)}
+                     
+                  {if $val.layer}
+                    miappcms.open('{$val.title}',fieldUrl('{$val.href|raw}'));
+                  {else/}
+                    miAppCmsLoads(fieldUrl('{$val.href|raw}'));
+                  {/if}  
+                {else/}
+                    {$val.js|raw}
+                {/if} 
+             break;
+          {elseif $val.event == 'edit'}
+             case '{$val.event}':
+              if(btn === false){
+                {if empty($val.js)}
+                   
+                    {if $val.layer}
+                      miappcms.open('{$val.title}',fieldUrl('{$val.href|raw}'));
+                    {else/}
+                      miAppCmsLoads(fieldUrl('{$val.href|raw}'));
+                    {/if}       
+                {else/}
+                    {$val.js|raw}
+                {/if}
+              }
+              break;
+          {elseif $val.event == 'del'}
+              case '{$val.event}':
+              if(btn === false){
+                {if empty($val.js)}
+                    miappcms.delremove(fieldUrl('{$val.href|raw}'));
+                  {else/}
+                    {$val.js|raw}
+                {/if}
+              }
+              break;
+          {elseif $val.event == 'menubtn'}
+            case '{$val.event}':
+                if(btn === false){
+                  {if empty($val.js)}
+                      $.get(fieldUrl('{$val.href|raw}'),function(data,status,xhr){
+                        if(data.code === 1){
+                          miappcms.msg(data.msg,'success');
+                        }else{
+                          miappcms.alerterror(data.msg);
+                        }
+                      });
+                  
+                  {else/}
+                      {$val.js|raw}
+                  {/if}
+                }
+            break;
+          {elseif $val.event == 'export'}  
+          {else /}
+              case '{$val.event}':
+                {if empty($val.js)}
+                      {if $val.layer}
+                        miappcms.open('{$val.title}',fieldUrl('{$val.href|raw}'));
+                      {else/}
+                        miAppCmsLoads(fieldUrl('{$val.href|raw}'));
+                      {/if}  
+                  {else/}
+                    {$val.js|raw}
+                {/if}
+                break;
+          {/if}   
+          {/volist}
+
+          }
+
+      });
+
+      /* 工具条 */
+      table.on('tool(miappcms-table-filter)',function (obj) {
+        var data = obj.data; //获得当前行数据
+        var event = obj.event;
+
+        function fieldsUrl(urls,datas=data){
+          var url = urls;
+              var reg = /__(.*?)__/g;
+              while(result = reg.exec(url)){
+              url = url.replace(result[0],datas[result[1]]);
+            }
+          return url;  
+        }
+        switch(event){
+          {volist name="rightButton" id="val"}
+          {if $val.event == 'edit'}
+          case 'edit':
+            {if empty($val.js)}
+              
+                  {if $val.layer}
+                    miappcms.open('{$val.title}',fieldsUrl('{$val.href|raw}'));
+                  {else/}
+                    miAppCmsLoads(fieldsUrl('{$val.href|raw}'));
+                  {/if} 
+            {else/}
+              {$val.js|raw}
+            {/if}
+           break;
+          {elseif $val.event == 'del'}
+          case 'del':
+              {if empty($val.js)}
+                 miappcms.delremove(fieldsUrl('{$val.href|raw}'));
+                {else/}
+                  {$val.js|raw}
+              {/if}
+            break;
+          {elseif $val.event == 'auth'}
+            case 'auth':
+                {if empty($val.js)}
+                 
+                   // miAppCmsLoads('{$val.title}',fieldsUrl('{$val.href|raw}'));
+                   window.location.href = fieldsUrl('{$val.href|raw}');
+                  {else/}
+                    {$val.js|raw}
+                {/if}
+              break;
+          {else /}
+            case '{$val.event}':
+              {if empty($val.js)}
+                  {if $val.layer}
+                    miappcms.open('{$val.title}',fieldsUrl('{$val.href|raw}'));
+                  {else/}
+                    miAppCmsLoads(fieldsUrl('{$val.href|raw}'));
+                  {/if} 
+                {else/}
+                  {$val.js|raw}
+              {/if}
+              break;
+          {/if}
+
+          {/volist}
+
+      }
+
+});
+
+    // 单元格编辑 
+    table.on('edit(miappcms-table-filter)', function(obj){ 
+            var val = obj.value, //得到修改后的值
+            field = obj.field,//当前编辑的字段名
+            data = obj.data; //所在行的所有相关数据 
+            if(!posInteger(val)){
+                miappcms.msg('请输入正整数','error');
+                return false;
+            }
+          var url  = '{:url("editsort")}?id='+data.id+"&field="+field+"&fieldvalue="+val;
+          miappcms.ajaxget(url);
+  }); 
+
+    /** 查询表格重载 */
+    form.on('submit(searchField)', function(data){
+        var formdata = {};
+        for(var i in data.field){
+            if(data.field[i]!= ""){
+                formdata[i] = data.field[i];
+            }
+        }
+        miappcms_table.reload({
+            where:formdata
+            ,page: {
+                curr: 1 //重新从第 1 页开始
+            }
+        });
+        return false; 
+    });
+    //执行一个laydate实例    
+var url_date = '';    
+var export_date =  laydate.render({
+    elem: '#miappcms_exports' //指定元素
+    ,range: true
+    ,done: function(value, date, enddate){
+    var start_Date = date.year+'-'+date.month+'-'+date.date;
+    var end_Date =  enddate.year+'-'+enddate.month+'-'+enddate.date;
+
+    url_date = "{:url('export')}?table={$table_name}&type=one&start="+start_Date+"&end="+end_Date;
+  }
+  });
+  
+  $("#export").on('click',function(){
+    var exports =  $("#miappcms_exports").val();
+     if(exports == ""){
+        miappcms.msg("请选择要导出的月份",'error');
+        return false;
+     }
+    window.location.href = url_date;
+  });
+
+       {if !empty($table_js_header)}
+       {$table_js_header|raw|default=""}
+       {/if}
+});
+</script>

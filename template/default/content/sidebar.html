@@ -1,0 +1,40 @@
+<div class="sidebar-widget">
+    <div class="single-sidebar-widget">
+        <h4 class="title">最新文章</h4>
+        <div class="recent-content">
+            {miappcms:lists cateid="4" where=" image <> '' "  pagenum ="5" order="id desc"}
+            <div class="recent-content-item">
+                {if $val.image}
+                <a href="{$val.url}"><img src="{$val.image}" style="height:67px; width:70px"></a>
+                {/if}
+                <div class="recent-text">
+                    <h4><a href="{$val.url}">{$val.title}</a></h4>
+                    <div class="single-item-comment-view">
+                       
+                        <span><i class="zmdi zmdi-calendar-check"></i>{$val.create_time|date="Y-m-d"}</span>
+                    </div>
+                    <p class="line_two">{$val.summary}</p>
+                </div>
+            </div>
+            {/miappcms:lists}
+        </div>
+    </div><div class="single-sidebar-widget">
+        <h4 class="title">最新文章</h4>
+        <div class="recent-content">
+            {miappcms:lists cateid="7" where=" image <> '' "  pagenum ="5" order="id desc"}
+            <div class="recent-content-item">
+                {if $val.image}
+                <a href="{$val.url}"><img src="{$val.image}" style="height:67px; width:70px"></a>
+                {/if}
+                <div class="recent-text">
+                    <h4><a href="{$val.url}">{$val.title}</a></h4>
+                    <div class="single-item-comment-view">
+                       
+                        <span><i class="zmdi zmdi-calendar-check"></i>{$val.create_time|date="Y-m-d"}</span>
+                    </div>
+                    <p class="line_two">{$val.summary}</p>
+                </div>
+            </div>
+            {/miappcms:lists}
+        </div>
+    </div>

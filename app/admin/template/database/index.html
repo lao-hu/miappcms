@@ -1,0 +1,137 @@
+
+<div class="miappcms-container">
+  <div class="layui-row">
+    <div class="layui-col-md12 marb50">
+      <div class="layui-row">
+        <div class="miappcms-dbtable">
+         
+          <table id="miappcms-table" lay-filter="miappcms-table-filter"></table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/html" id="miappcms-table-header">
+  <button id="export_now" class="layui-btn layui-btn-sm layui-btn-normal sqlbackup-btn layui-btn-disabled" href="javascript:;" autocomplete="off" disabled="disabled"  lay-event="export_now"><i class="fa fa-folder" aria-hidden="true"></i> 立即备份</button>
+  <button id="optimize" class="layui-btn layui-btn-sm sqlbackup-btn miappcms-btn-waring layui-btn-disabled"  lay-event="optimize" disabled="disabled"><i class="fa fa-heartbeat" aria-hidden="true" ></i> 优化表</button>
+  <button id="repair" class="layui-btn layui-btn-sm sqlbackup-btn miappcms-btn-success layui-btn-disabled"  lay-event="repair" disabled="disabled"><i class="fa fa-street-view" aria-hidden="true"></i> 修复表</button>
+  <!-- <a  href="{:url('index/importlist')}" class="layui-btn">还原数据库</a> -->
+
+</script>
+<script>
+layui.use('table', function(){
+  const table = layui.table;
+ 
+  var miappcms_table = table.render({
+        elem: '#miappcms-table'
+        ,id:'miappcms-table'
+        ,url: '{:url("getList")}' //数据接口
+        ,toolbar: '#miappcms-table-header' //开启头部工具栏，并为其绑定左侧模板
+        ,defaultToolbar: [
+          //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+          'filter', 
+         // 'exports' 
+        ]
+        ,title:'{:date("YmdHis")}'
+        ,text:{none: '没有找到相关数据'}
+        ,cols:[[
+            {type: 'checkbox'}
+           ,{field: 'name', title: '数据表',align:'center'}
+           ,{field: 'engine', title: '存储引擎',align:'center',sort:true}
+           ,{field: 'row_format', title: '行格式',align:'center'}
+           ,{field: 'rows', title: '行数',align:'center'}
+           ,{field: 'data_length', title: '数据量',align:'center'}
+           ,{field: 'comment', title: '表注释',align:'center'}
+           ,{field: 'create_time', title: '创建时间',align:'center'}
+           ,{field: 'update_time', title: '更新时间',align:'center'}
+        ]]
+        ,page:false
+        ,limit:200
+  });
+ 
+  /** 复选框 */
+  table.on('checkbox(miappcms-table-filter)', function(obj){
+    var check =  table.checkStatus('miappcms-table');
+    var num = check.data;
+ 
+    if(num.length >= 1){
+      $(".sqlbackup-btn").removeClass("layui-btn-disabled").removeAttr('disabled');   
+    }else{
+      $(".sqlbackup-btn").addClass("layui-btn-disabled").attr('disabled','disabled');
+    }
+      
+});
+   /**
+    * 表头事件
+   */
+  table.on('toolbar(miappcms-table-filter)',function(obj){
+
+    var check_status = table.checkStatus('miappcms-table');
+    
+    var data = check_status.data;
+    var ids = '';
+    var fields = '';
+    // 返回 选择的字段数据
+    function fieldData(field){
+          for(var i=0;i<data.length;i++){
+            ids += data[i][field]+",";
+          }
+          fields = ids.slice(0,ids.length-1);
+          return fields;
+    }
+    var index = '';
+    var field_name = fieldData('name');
+    switch(obj.event){
+      // 立即备份
+      case 'export_now':
+      layer.msg('正在备份数据表中。。。。。，请稍等，不要离开本页面',{icon:1,shade: 0,offset:'50px'});  
+        index = layer.load(2);
+       $.post('{:url("sqlBackup")}',{"tables":field_name},function(data,status,xhr){
+          if(data.code == 1){
+            miappcms.msg(data.msg,'success');
+           layer.close(index);
+          }else{
+            miappcms.alerterror(data.msg);
+            layer.close(index);
+          }
+       });
+      break;
+      case 'optimize':
+      layer.msg('正在优化数据表中。。。。。，请稍等，不要离开本页面',{icon:1,shade: 0,offset:'50px'});  
+      index = layer.load(2);
+      var url = "{:url('optimize')}?tables="+field_name;
+
+        $.get(url,function(data,status,xhr){
+          if(data.code == 1){
+            miappcms.msg(data.msg,'success');
+           layer.close(index);
+          }else{
+            miappcms.alerterror(data.msg);
+            layer.close(index);
+          }
+        });
+      break;
+      case 'repair':
+        
+        layer.msg('正准备修复数据表中。。。。。，请稍等，不要离开本页面',{icon:1,shade: 0,offset:'50px'});  
+        index = layer.load(2);
+       var url = "{:url('repair')}?tables="+field_name;
+        $.get(url,function(data,status,xhr){
+          if(data.code == 1){
+            miappcms.msg(data.msg,'success');
+           layer.close(index);
+          }else{
+            miappcms.alerterror(data.msg);
+            layer.close(index);
+          }
+        });
+    
+      break;
+      
+    }
+
+  });
+
+
+});
+</script>

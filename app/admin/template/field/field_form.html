@@ -1,0 +1,295 @@
+<div class="miappcms-containers">
+    <div class="layui-row">
+        <div class="layui-col-md12">
+            <div class="miappcms-form mart20">
+                <blockquote class="layui-elem-quote layui-elem-quote-success mart20 marb20">
+                    <p>
+                        1、如果该模块（数据表），中不存在要添加的字段时会自动创建该字段并添加到字段管理中;<br/>
+
+                    </p>
+                </blockquote>
+                {if $items}
+                 <form action='{:url("editPostSubmit")}' method="post" class="layui-form layui-form-pane layui-form-actions">
+                {else /}
+                <form action='{:url("addPostSubmit")}' method="post" class="layui-form layui-form-pane layui-form-actions">
+                {/if}
+                    
+                    {if $items}
+                    <input type="hidden" name="id" value="{$items.id}">
+                    <input type="hidden" name="old_field" value="{$items.field}">
+                    {/if}
+                    <div class="layui-form-item marb0">
+                        <label class="layui-form-label"> <span class="yd">*</span> 所属模块</label>
+                        <div class="layui-input-block">
+                            <select id="module_id" name="module_id" lay-verify="required" lay-filter="module_id" lay-reqText="请选择模块">
+                                <option value="">请选择模块</option>
+                               {volist name='model' id="val"}
+                    <option value="{$val.id}" {if $module_id == $val.id} selected {/if} > {$val.module_name} -- [ {$val.table_name} ] </option>
+                               {/volist}                    
+                            </select>
+                        </div>
+                    </div>
+                    <div class="miappcms-form-desc marb20">
+                        <i class="fa fa-info-circle"></i> 字段所属的模块（数据表）
+                    </div>
+
+                    <div class="layui-form-item marb0" pane>
+                        <label class="layui-form-label"> 所属选项</label>
+                        <div class="layui-input-block" id="fieldTab">
+                            
+                        </div>
+                    </div>
+                    <div class="miappcms-form-desc marb20">
+                        <i class="fa fa-info-circle"></i> 如果所属模块为单页模式的时候使用
+                    </div>
+
+                    <div class="layui-form-item marb0">
+                        <label class="layui-form-label"><span class="yd">*</span> 字段类型 </label>
+                        <div class="layui-input-block">
+                            <select id="type" name="type" lay-verify="required" lay-filter="type" lay-reqText="请选择字段类型">
+                                <option value="">请选择字段类型</option>
+                                <option value="text" {if $type =='text' } selected {/if} >单行文本</option>
+                                <option value="textarea" {if $type =='textarea' } selected {/if} >多行文本</option>
+                                <option value="editor" {if $type =='editor' } selected {/if} >编辑器</option>
+                                <option value="radio" {if $type =='radio' } selected {/if} > 单选按钮</option>
+                                <option value="checkbox" {if $type =='checkbox' } selected {/if} > 多选按钮</option>
+                                <option value="select" {if $type =='select' } selected {/if} >下拉菜单</option>
+                                <option value="tags" {if $type =='tags' } selected {/if} > 标签 <option></option>
+                                <option value="date" {if $type =='date' } selected {/if} >年月日</option>
+                                <option value="time" {if $type =='time' } selected {/if} >时间分秒</option>
+                                <option value="datetime" {if $type =='datetime' } selected {/if} >日期时间</option>
+                                <option value="image" {if $type =='image' } selected {/if} >单张图片</option>
+                                <option value="images" {if $type =='images' } selected {/if} >多图列表</option>
+                                <option value="file" {if $type =='file' } selected {/if} >单文件上传</option>
+                                <option value="files" {if $type =='files' } selected {/if} >多文件上传</option>
+                                <option value="number" {if $type =='number' } selected {/if} >数字</option>
+                                <option value="password" {if $type =='password' } selected {/if} >密码</option>
+                                <option value="hidden" {if $type =='hidden' } selected {/if} >隐藏域<option>
+                                <option value="pinyin" {if $type =='pinyin' } selected {/if}>拼音</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="miappcms-form-desc marb20">
+                        <i class="fa fa-info-circle"></i> 字段的类型
+                    </div>
+                  
+
+                    <div class="layui-form-item marb0">
+                        <label class="layui-form-label "> <span class="yd">*</span> 字段名： </label>
+                        <div class="layui-input-block">
+                            <input type="text" name="field" required  lay-verify="required"  placeholder="字段名" autocomplete="off" class="layui-input" value="{if $items}{$items.field}{/if}" lay-reqText="请输入字段名">
+                        </div>
+                    </div>
+                    <div class="miappcms-form-desc marb20">
+                        <i class="fa fa-info-circle"></i> 注意不要包含空格，建议全部小写，通过_分割，如 user, user_name, title_key
+                    </div>
+
+                    <div class="layui-form-item marb0">
+                        <label class="layui-form-label "> <span class="yd">*</span> 字段别名： </label>
+                        <div class="layui-input-block">
+                            <input type="text" name="name" required  lay-verify="required"  placeholder="字段别名" autocomplete="off" class="layui-input" value="{if $items}{$items.name}{/if}" lay-reqText="请输入字段别名">
+                        </div>
+                    </div>
+                    <div class="miappcms-form-desc marb20">
+                        <i class="fa fa-info-circle"></i> 建议不超过4个汉字
+                    </div>
+                 
+                    <div class="layui-form-item marb0">
+                        <label class="layui-form-label "> 提示信息： </label>
+                        <div class="layui-input-block">
+                            <input type="text" name="tips" placeholder="提示信息" autocomplete="off" class="layui-input" value="{if $items}{$items.tips}{/if}">
+                        </div>
+                    </div>
+                    <div class="miappcms-form-desc marb20">
+                        <i class="fa fa-info-circle"></i> 字段的提示信息
+                    </div>
+
+                    <div class="layui-form-item marb0" pane>
+                        <label class="layui-form-label">字段展示：</label>
+                          <div class="layui-input-block">
+                              
+                            <input type="checkbox" name="is_add" title="添加" value="1" lay-skin="primary"  {if $items} {if $items.is_add == '1'} checked {/if} {/if}>
+                            <input type="checkbox" name="is_edit" title="编辑" value="1" lay-skin="primary" {if $items} {if $items.is_edit == '1'} checked {/if} {/if}> 
+                            <input type="checkbox" name="is_list" title="列表" value="1" lay-skin="primary" {if $items} {if $items.is_list == '1'} checked {/if} {/if}> 
+                            <input type="checkbox" name="is_search" title="搜索" value="1" lay-skin="primary" {if $items} {if $items.is_search == '1'} checked {/if} {/if}> 
+                            <input type="checkbox" name="is_sort" title="排序" value="1" lay-skin="primary" {if $items} {if $items.is_sort == '1'} checked {/if} {/if}> 
+                          </div>
+                    </div>
+                    <div class="miappcms-form-desc marb20">
+                        <i class="fa fa-info-circle"></i>  设置字段的使用场景
+                    </div>
+
+                    <div class="layui-form-item marb0">
+                        <label class="layui-form-label "> <span class="yd">*</span> 数据源： </label>
+                        <div class="layui-input-block">
+                           <select name="source" lay-verify="required" lay-filter="source" lay-reqText="请选择数据源">
+                               <option value="0" > 【字段本身】 </option>
+                               <option value="1" {if $items} {if $items.source == '1'} selected {/if} {/if} >【字典】</option>
+                               <option value="2" {if $items} {if $items.source == '2'} selected {/if} {/if} >【模型】</option>
+                           </select>
+                        </div>
+                    </div>
+                    <div class="miappcms-form-desc marb20">
+                        <i class="fa fa-info-circle"></i>  通常字典类型为： select|radio|checkbox 或 关联了其他模型时需配置
+                    </div>
+
+                    <div class="layui-form-item marb0">
+                        <label class="layui-form-label "> 关联模型： </label>
+                        <div class="layui-input-block">
+                            <input type="text" name="relation_model" placeholder="关联模型" autocomplete="off" class="layui-input" value="{if $items}{$items.relation_model}{/if}">
+                        </div>
+                    </div>
+                    <div class="miappcms-form-desc marb20">
+                        <i class="fa fa-info-circle"></i>  只有数据源选择 <模型>时生效，填写完整的模型名称，如 User
+                    </div>
+
+                    <div class="layui-form-item marb0">
+                        <label class="layui-form-label "> 模型展示字段： </label>
+                        <div class="layui-input-block">
+                            <input type="text" name="relation_field" placeholder="模型展示字段" autocomplete="off" class="layui-input" value="{if $items}{$items.relation_field}{/if}">
+                        </div>
+                    </div>
+                    <div class="miappcms-form-desc marb20">
+                        <i class="fa fa-info-circle"></i>  只有数据源选择 <模型> 时生效，填写完整的字段名称，如 type_name
+                    </div>
+
+                    <div class="layui-form-item marb0">
+                        <label class="layui-form-label "> 字典类型： </label>
+                        <div class="layui-input-block" id="dict">
+                            <select name="dict_id"  lay-filter="dict_id" >
+                                <option value="">请选择字典类型</option>
+                                {volist name="dict" id="val"}
+                                 <option value="{$val.id}" {if $items}{if $items.dict_id == $val.id} selected {/if} {/if} >{$val.name} - 【{$val.remake}】</option>
+                                 {/volist}
+                             </select>
+                        </div>
+                    </div>
+                    <div class="miappcms-form-desc marb20">
+                        <i class="fa fa-info-circle"></i>  只有数据源选择 <字典> 时生效，填写完整的字段名称，如 type_name
+                    </div>
+
+
+                    <div class="layui-form-item marb0" pane="">
+                        <label class="layui-form-label ">字段设置： </label>
+                        <div class="layui-input-block" id="fieldSetup"></div>
+                    </div>
+                    <div class="miappcms-form-desc marb20">
+                        <i class="fa fa-info-circle"></i> 字段设置设置其他
+                    </div>
+
+                    <div class="layui-form-item marb0" >
+                        <label class="layui-form-label">字符长度：</label>
+                          <div class="layui-input-block">
+                              <input type="text" name="maxlength" placeholder="字符长度" autocomplete="off" class="layui-input" value="{if $items}{$items.maxlength}{/if}">
+                          </div>
+                    </div>
+                    <div class="miappcms-form-desc marb20">
+                        <i class="fa fa-info-circle"></i>  通常无需配置，系统会自动设置
+                    </div>
+
+                    <div class="layui-form-item marb0 " pane>
+                        <label class="layui-form-label " >是否必填： </label>
+                        <div class="layui-input-block">
+                            {if $items} 
+                                <input type="radio" name="required" value="1" title="是"  {if $items.required == 1} checked {/if}>
+                                <input type="radio" name="required" value="0" title="否" {if $items.required == 0} checked {/if}>
+                            {else /}
+                                <input type="radio" name="required" value="1" title="是">
+                                <input type="radio" name="required" value="0" title="否" checked>
+                            {/if}
+                         
+                        </div>
+                    </div>
+                    <div class="miappcms-form-desc marb20">
+                        <i class="fa fa-info-circle"></i> 设置字段是否必填
+                    </div>
+
+                    <div class="layui-form-item marb0">
+                        <label class="layui-form-label ">排序： </label>
+                        <div class="layui-input-block">
+                        <input type="text" name="sort"  placeholder="" autocomplete="off" class="layui-input" value="{if $items}{$items.sort}{/if}">
+                        </div>
+                    </div>  
+                    <div class="miappcms-form-desc marb20">
+                        <i class="fa fa-info-circle"></i>  字段排序
+                    </div>
+
+                    <div class="layui-form-item marb0">
+                        <label class="layui-form-label">备注： </label>
+                        <div class="layui-input-block">
+                            <textarea  name="note" placeholder="请输入内容" class="layui-textarea">{if $items}{$items.note}{/if}</textarea>
+                        </div>
+                    </div>  
+                    <div class="miappcms-form-desc marb20">
+                        <i class="fa fa-info-circle"></i> 字段备注
+                    </div>
+
+
+                    <div class="layui-form-item marb20 mi-forms-btns">
+                        <div class="layui-input-block ">
+                          <button class="layui-btn {if $layer == true }layui-hide {/if}" lay-submit lay-filter="formDemo" >立即提交</button>
+                          <button type="reset"  class="layui-btn layui-btn-primary {if $layer == true }layui-hide {/if}"  >重置</button>
+                        </div>
+                    </div>
+                </form>
+        </div>
+    </div>
+</div>
+
+<script>
+layui.use(['table','form'], function(){
+  var table = layui.table,
+       form = layui.form;
+       function field_type(url,ids="#fieldSetup"){
+            $.ajax({
+                type:"POST",
+                'url':url,
+                'data':'',
+                cache:false,
+                success:function(msg){
+                    $(ids).html(msg);
+                    form.render('select');
+                        return true;
+                    },error:function(error){
+                        miappcms.msg("网络错误或服务错误",'error');
+                        return false;
+                    }
+            });
+        } 
+  var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+
+      
+    {if $items}
+        field_type('{:url("typesetup")}?module_id={$module_id}&type={$type}&field={$field}');
+        field_type('{:url("gettab")}?mid={$module_id}&tid={$tab_id}',"#fieldTab");
+        var form_url = '{:url("editPostSubmit")}';
+    {else /}
+        var form_url = '{:url("addPostSubmit")}';
+    {/if}
+    // 所属模块
+    form.on('select(module_id)', function(data){
+       // console.log(data.value);
+        if(data.value != ""){
+            field_type('{:url("gettab")}?mid='+data.value,"#fieldTab");
+        }
+    });
+    // 字段类型
+    form.on('select(type)', function(data){
+        if(data.value != ""){
+           field_type('{:url("typesetup")}?module_id={$module_id}&type='+data.value);
+        }
+    }); 
+   
+
+      //监听提交
+      form.on('submit(formDemo)', function(data){
+        var formdata = {};
+        for(var i in data.field){
+            formdata[i] = data.field[i];
+        }
+        miappcms.submit(form_url,'post',formdata);
+        return false;
+      });
+  
+});
+</script>

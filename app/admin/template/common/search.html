@@ -1,0 +1,40 @@
+
+{notempty name="search_item"}
+<div class="miappcms-body-serach marb10">
+    <div class="layui-row"></div>
+    <div class="layui-row">
+          <form class="layui-form" action="" method="post">
+            <input type="hidden" name="is_asc" value="desc">
+            <input type="hidden" name="order_field" value="sort">
+          <div class="miappcms-body-serach-content">
+                {volist name="search_item" id="val"}
+                    {if $val.type == "select"}
+                        <span class="label">{$val.name}：</span>
+                        <div class="layui-inline">
+                            <select name="{$val.field}" lay-verify="">
+                                <option value="">所有</option>
+                                {volist name="val.option" id="vo"}
+                                {if is_array($vo)}
+                                    <option value="{$vo.id}" {if $vo.disabled == 1} disabled {/if} >{$vo.name}</option>
+                                {else/}
+                                   <option value="{$key}">{$vo}</option>
+                                {/if}
+                                {/volist}
+                            </select> 
+                        </div>
+                    {else /}
+                        <span class="label">{$val.name}：</span>
+                        <div class="layui-inline">
+                            <input class="layui-input" name="{$val.field}" autocomplete="off" placeholder="{$val.empty}">
+                        </div>
+                    {/if}
+                {/volist}
+              <div class="layui-inline">
+                  <button class="layui-btn layui-btn-normal layui-btn-sm" lay-submit lay-filter="searchField"><i class="fa fa-search"></i> 搜索</button>
+                  <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm"><i class="fa fa-refresh"></i> 重置</button>
+              </div>
+          </div>
+      </form> 
+    </div>
+</div>
+{/notempty}

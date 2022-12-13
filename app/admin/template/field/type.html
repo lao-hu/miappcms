@@ -1,0 +1,698 @@
+{__NOLAYOUT__}
+<table class="layui-table" style="">
+    <colgroup>
+        <col width="150">
+        <col>
+    </colgroup>
+{switch $type}
+    {case text}
+        <tbody>
+            <tr>
+                <td class="name">默认值：</td>
+                <td class="value">
+                    <input type="text" name="setup[default]" autocomplete="off" class="layui-input" value="{$field_item.setup.default ?? ''}">
+                </td>
+            </tr>
+                <tr>
+                    <td class="name">额外的css类：</td>
+                    <td class="value">
+                        <input type="text" name="setup[css]" autocomplete="off" class="layui-input" value="{$field_item.setup.css ?? ''}">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="name">占位符：</td>
+                    <td class="value">
+                        <input type="text" name="setup[placeholder]" placeholder="" autocomplete="off" class="layui-input" value="{$field_item.setup.placeholder ?? ''}">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="name">字段类型：</td>
+                    <td class="value">
+                    <select name="setup[fieldtype]" lay-filter="changetype">
+                        <option value="varchar" {if $field_item} {$field_item.setup.fieldtype=='varchar' ? 'selected':''} {/if}>varchar</option>
+                        <option value="text" {if $field_item} {$field_item.setup.fieldtype=='text' ? 'selected':''} {/if}>text</option>
+                        <option value="mediumtext" {if $field_item} {$field_item.setup.fieldtype=='mediumtext' ? 'selected':''} {/if}>mediumtext</option>
+                    </select>
+                    </td>
+            </tr>
+        </tbody>
+    {/case}
+    {case textarea}
+    <tbody>
+        <tr>
+            <td class="name">默认值：</td>
+            <td class="value">
+                <input type="text" name="setup[default]" autocomplete="off" class="layui-input" value="{$field_item.setup.default ?? ''}">
+            </td>
+        </tr>
+            <tr>
+                <td class="name">额外的css类：</td>
+                <td class="value">
+                    <input type="text" name="setup[css]" autocomplete="off" class="layui-input" value="{$field_item.setup.css ?? ''}">
+                </td>
+            </tr>
+            <tr>
+                <td class="name">占位符：</td>
+                <td class="value">
+                    <input type="text" name="setup[placeholder]" placeholder="" autocomplete="off" class="layui-input" value="{$field_item.setup.placeholder ?? ''}">
+                </td>
+            </tr>
+            <tr>
+                <td class="name">字段类型：</td>
+                <td class="value">
+                    <select name="setup[fieldtype]" lay-filter="changetype">
+                        <option value="text" {if $field_item} {$field_item.setup.fieldtype=='text' ? 'selected':''} {/if}>text</option>
+                        <option value="mediumtext" {if $field_item}{$field_item.setup.fieldtype=='mediumtext' ? 'selected':''} {/if}>mediumtext</option>
+                        <option value="varchar" {if $field_item}{$field_item.setup.fieldtype=='varchar' ? 'selected':''} {/if}>varchar</option>
+                    </select>
+                </td>
+        </tr>
+    </tbody>
+    {/case}
+    {case editor}
+        <tbody>
+            <tr>
+                <td class="name">默认值：</td>
+                <td class="value">
+                    <input type="text" name="setup[default]" autocomplete="off" class="layui-input" value="{$field_item.setup.default ?? ''}">
+                </td>
+            </tr>
+            <tr>
+                <td class="name">额外的css类：</td>
+                <td class="value">
+                    <input type="text" name="setup[css]"  autocomplete="off" class="layui-input" value="{$field_item.setup.css ?? ''}">
+                </td>
+            </tr>
+            <tr>
+                <td class="name">占位符：</td>
+                <td class="value">
+                    <input type="text" name="setup[placeholder]" placeholder="" autocomplete="off" class="layui-input" value="{$field_item.setup.placeholder ?? ''}">
+                </td>
+            </tr>
+            <tr>
+                <td class="name">高度：</td>
+                <td class="value">
+                    <input type="text" name="setup[height]" placeholder="" autocomplete="off" class="layui-input" value="{$field_item.setup.height ?? ''}">
+                </td>
+            </tr>
+            <tr>
+                <td class="name">字段类型：</td>
+                <td class="value">
+                    <select name="setup[fieldtype]" lay-filter="changetype">
+                        <option value="text" {if $field_item} {$field_item.setup.fieldtype=='text' ? 'selected':''} {/if}>
+                            text
+                        </option>
+                        <option value="mediumtext" {if $field_item}{$field_item.setup.fieldtype=='mediumtext' ? 'selected':''} {/if}>
+                            mediumtext
+                        </option>
+                        <option value="varchar" {if $field_item}{$field_item.setup.fieldtype=='varchar' ? 'selected':''} {/if}>
+                            varchar
+                        </option>
+                    </select>
+                </td>
+        </tr>
+        </tbody>
+    {/case}
+    {case radio}
+    <tbody>
+        <tr>
+            <td class="name">默认值：</td>
+            <td class="value">
+                <input type="text" name="setup[default]" autocomplete="off" class="layui-input" value="{$field_item.setup.default ?? ''}">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">额外的css类：</td>
+            <td class="value">
+                <input type="text" name="setup[css]"  autocomplete="off" class="layui-input" value="{$field_item.setup.css ?? ''}">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">字段类型：</td>
+            <td class="value">
+            <select name="setup[fieldtype]" lay-filter="changetype">
+                <option value="varchar" {if $field_item}{$field_item.setup.fieldtype=='varchar'?'selected':''}{/if}>字符 VARCHAR</option>
+                <option value="tinyint" {if $field_item}{$field_item.setup.fieldtype=='tinyint'?'selected':''}{/if}>整数 TINYINT</option>
+                <option value="smallint" {if $field_item}{$field_item.setup.fieldtype=='smallint'?'selected':''}{/if}>整数 SMALLINT</option>
+                <option value="mediumint" {if $field_item}{$field_item.setup.fieldtype=='mediumint'?'selected':''}{/if}>整数 MEDIUMINT</option>
+                <option value="int" {if $field_item}{$field_item.setup.fieldtype=='int'?'selected':''}{/if}>整数 INT</option>
+            </select>
+            </td>
+    </tr>
+    </tbody>
+    {/case}
+    {case checkbox}
+    <tbody>
+        <tr>
+            <td class="name">默认值：</td>
+            <td class="value">
+                <input type="text" name="setup[default]" autocomplete="off" class="layui-input" value="{$field_item.setup.default ?? ''}">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">额外的css类：</td>
+            <td class="value">
+                <input type="text" name="setup[css]"  autocomplete="off" class="layui-input" value="{$field_item.setup.css ?? ''}">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">字段类型：</td>
+            <td class="value">
+            <select name="setup[fieldtype]" lay-filter="changetype">
+                <option value="varchar" {if $field_item}{$field_item.setup.fieldtype=='varchar'?'selected':''}{/if}>字符 VARCHAR</option>
+                <option value="tinyint" {if $field_item}{$field_item.setup.fieldtype=='tinyint'?'selected':''}{/if}>整数 TINYINT</option>
+                <option value="smallint" {if $field_item}{$field_item.setup.fieldtype=='smallint'?'selected':''}{/if}>整数 SMALLINT</option>
+                <option value="mediumint" {if $field_item}{$field_item.setup.fieldtype=='mediumint'?'selected':''}{/if}>整数 MEDIUMINT</option>
+                <option value="int" {if $field_item}{$field_item.setup.fieldtype=='int'?'selected':''}{/if}>整数 INT</option>
+            </select>
+            </td>
+    </tr>
+    </tbody>
+    {/case}
+    {case select}
+    <tbody>
+        <tr>
+            <td class="name">默认值：</td>
+            <td class="value">
+                <input type="text" name="setup[default]" autocomplete="off" class="layui-input" value="{$field_item.setup.default ?? ''}">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">额外的css类：</td>
+            <td class="value">
+                <input type="text" name="setup[css]"  autocomplete="off" class="layui-input" value="{$field_item.setup.css ?? ''}">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">字段类型：</td>
+            <td class="value">
+            <select name="setup[fieldtype]" lay-filter="changetype">
+                <option value="varchar" {if $field_item}{$field_item.setup.fieldtype=='varchar'?'selected':''}{/if}>字符 VARCHAR</option>
+                <option value="tinyint" {if $field_item}{$field_item.setup.fieldtype=='tinyint'?'selected':''}{/if}>整数 TINYINT</option>
+                <option value="smallint" {if $field_item}{$field_item.setup.fieldtype=='smallint'?'selected':''}{/if}>整数 SMALLINT</option>
+                <option value="mediumint" {if $field_item}{$field_item.setup.fieldtype=='mediumint'?'selected':''}{/if}>整数 MEDIUMINT</option>
+                <option value="int" {if $field_item}{$field_item.setup.fieldtype=='int'?'selected':''}{/if}>整数 INT</option>
+            </select>
+            </td>
+    </tr>
+    </tbody>
+    {/case}
+    {case date}
+    <tbody>
+        <tr>
+            <td class="name">默认值：</td>
+            <td class="value">
+                <input type="text" name="setup[default]" autocomplete="off" class="layui-input" value="{$field_item.setup.default ?? ''}">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">时间类型<a href="http://layui.org.cn/doc/modules/laydate.html#type" target="_blank" title="点击查看layui日期格式"><i class="fa fa-question-circle"></i></a>：</td>
+            <td class="value">
+                <select name="setup[format]" lay-filter="changetype">
+                    <option value="date" {if $field_item} {$field_item.setup.format=='date' ? 'selected':''} {/if}>年、月、日选择器</option>
+                    <option value="month" {if $field_item} {$field_item.setup.format=='month' ? 'selected':''} {/if}>年月选择器--[年、月选择]</option>
+                    <option value="year" {if $field_item} {$field_item.setup.format=='year' ? 'selected':''} {/if}>年选择器--[年份选择]</option>
+                </select>
+            </td>
+        </tr>
+     
+        <tr>
+            <td class="name">额外的css类：</td>
+            <td class="value">
+                <input type="text" name="setup[css]" autocomplete="off" class="layui-input" value="{$field_item.setup.css ?? ''}">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">占位符：</td>
+            <td class="value">
+                <input type="text" name="setup[placeholder]" placeholder="" autocomplete="off" class="layui-input" value="{$field_item.setup.placeholder ?? ''}">
+            </td>
+        </tr>
+       
+        <tr>
+            <td class="name">字段类型：</td>
+            <td class="value">
+            <select name="setup[fieldtype]" lay-filter="changetype">
+                <option value="int" {if $field_item} {$field_item.setup.fieldtype=='int' ? 'selected':''} {/if}>int</option>
+                <option value="varchar" {if $field_item} {$field_item.setup.fieldtype=='varchar' ? 'selected':''} {/if}>varchar</option>
+                <option value="char" {if $field_item} {$field_item.setup.fieldtype=='char' ? 'selected':''} {/if}>char</option>
+            </select>
+            </td>
+    </tr>
+    </tbody>
+    {/case}
+    {case time}
+    <tbody>
+        <tr>
+            <td class="name">默认值：</td>
+            <td class="value">
+                <input type="text" name="setup[default]" autocomplete="off" class="layui-input" value="{$field_item.setup.default ?? ''}">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">时间格式<a href="http://layui.org.cn/doc/modules/laydate.html#type" target="_blank" title="点击查看layui日期格式"><i class="fa fa-question-circle"></i></a>：</td>
+            <td class="value">
+                <select name="setup[format]" lay-filter="changetype">
+                    <option value="time" >时间选择器-[时、分、秒选择]</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td class="name">额外的css类：</td>
+            <td class="value">
+                <input type="text" name="setup[css]" autocomplete="off" class="layui-input" value="{$field_item.setup.css ?? ''}">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">占位符：</td>
+            <td class="value">
+                <input type="text" name="setup[placeholder]" placeholder="" autocomplete="off" class="layui-input" value="{$field_item.setup.placeholder ?? ''}">
+            </td>
+        </tr>
+       
+        <tr>
+            <td class="name">字段类型：</td>
+            <td class="value">
+            <select name="setup[fieldtype]" lay-filter="changetype">
+                <option value="int" {if $field_item} {$field_item.setup.fieldtype=='int' ? 'selected':''} {/if}>int</option>
+                <option value="varchar" {if $field_item} {$field_item.setup.fieldtype=='varchar' ? 'selected':''} {/if}>varchar</option>
+                <option value="char" {if $field_item} {$field_item.setup.fieldtype=='char' ? 'selected':''} {/if}>char</option>
+            </select>
+            </td>
+    </tr>
+    </tbody>
+    {/case}
+    {case datetime}
+    <tbody>
+        <tr>
+            <td class="name">默认值：</td>
+            <td class="value">
+                <input type="text" name="setup[default]" autocomplete="off" class="layui-input" value="{$field_item.setup.default ?? ''}">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">时间格式<a href="http://layui.org.cn/doc/modules/laydate.html#type" target="_blank" title="点击查看layui日期格式"><i class="fa fa-question-circle"></i></a>：</td>
+            <td class="value">
+                <select name="setup[format]" lay-filter="changetype">
+                    <option value="datetime" >日期时间选择器--[年、月、日、时、分、秒]</option>
+                </select>
+            </td>
+        </tr>
+        
+        <tr>
+            <td class="name">额外的css类：</td>
+            <td class="value">
+                <input type="text" name="setup[css]" autocomplete="off" class="layui-input" value="{$field_item.setup.css ?? ''}">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">占位符：</td>
+            <td class="value">
+                <input type="text" name="setup[placeholder]" placeholder="" autocomplete="off" class="layui-input" value="{$field_item.setup.placeholder ?? ''}">
+            </td>
+        </tr>
+       
+        <tr>
+            <td class="name">字段类型：</td>
+            <td class="value">
+            <select name="setup[fieldtype]" lay-filter="changetype">
+                <option value="int" {if $field_item} {$field_item.setup.fieldtype=='int' ? 'selected':''} {/if}>int</option>
+                <option value="varchar" {if $field_item} {$field_item.setup.fieldtype=='varchar' ? 'selected':''} {/if}>varchar</option>
+                <option value="char" {if $field_item} {$field_item.setup.fieldtype=='char' ? 'selected':''} {/if}>char</option>
+            </select>
+            </td>
+    </tr>
+    </tbody>
+    {/case}
+    {case image}
+    <tbody>
+        <tr>
+            <td class="name">默认值：</td>
+            <td class="value">
+                <input type="text" name="setup[default]" autocomplete="off" class="layui-input" value="{$field_item.setup.default ?? ''}">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">额外的css类：</td>
+            <td class="value">
+                <input type="text" name="setup[css]" autocomplete="off" class="layui-input" value="{$field_item.setup.css ?? ''}">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">占位符：</td>
+            <td class="value">
+                <input type="text" name="setup[placeholder]" placeholder="" autocomplete="off" class="layui-input" value="{$field_item.setup.placeholder ?? '支持图片格式 ：'.$mi_uploads_img_ext}">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">图片上传大小(KB)：</td>
+            <td class="value">
+                <input type="text" name="setup[size]" placeholder="" autocomplete="off" class="layui-input" value="{$field_item.setup.size ?? $mi_uploads_img_size}">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">图片上传格式：</td>
+            <td class="value">
+                <input type="text" name="setup[ext]" placeholder="" autocomplete="off" class="layui-input" value="{$field_item.setup.ext ?: $mi_uploads_img_ext}">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">字段类型：</td>
+            <td class="value">
+            <select name="setup[fieldtype]" lay-filter="changetype">
+                <option value="varchar" {if $field_item} {$field_item.setup.fieldtype=='varchar' ? 'selected':''} {/if}>varchar</option>
+                <option value="text" {if $field_item} {$field_item.setup.fieldtype=='text' ? 'selected':''} {/if}>text</option>
+                <option value="mediumtext" {if $field_item} {$field_item.setup.fieldtype=='mediumtext' ? 'selected':''} {/if}>mediumtext</option>
+            </select>
+            </td>
+    </tr>
+    </tbody>
+    {/case}
+    {case images}
+    <tbody>
+        <tr>
+            <td class="name">默认值：</td>
+            <td class="value">
+                <input type="text" name="setup[default]" autocomplete="off" class="layui-input" value="{$field_item.setup.default ?? ''}">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">额外的css类：</td>
+            <td class="value">
+                <input type="text" name="setup[css]" autocomplete="off" class="layui-input" value="{$field_item.setup.css ?? ''}">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">占位符：</td>
+            <td class="value">
+                <input type="text" name="setup[placeholder]" placeholder="" autocomplete="off" class="layui-input" value="{$field_item.setup.placeholder ?? '支持图片格式 ：'.$mi_uploads_img_ext}">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">图片上传大小(KB)：</td>
+            <td class="value">
+                <input type="text" name="setup[size]" placeholder="" autocomplete="off" class="layui-input" value="{$field_item.setup.size ?? $mi_uploads_img_size}">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">图片上传格式：</td>
+            <td class="value">
+            <input type="text" name="setup[ext]" placeholder="" autocomplete="off" class="layui-input" value="{$field_item.setup.ext ?: $mi_uploads_img_ext}">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">字段类型：</td>
+            <td class="value">
+            <select name="setup[fieldtype]" lay-filter="changetype">
+                <option value="text" {if $field_item} {$field_item.setup.fieldtype=='text' ? 'selected':''} {/if}>text</option>
+                <option value="mediumtext" {if $field_item} {$field_item.setup.fieldtype=='mediumtext' ? 'selected':''} {/if}>mediumtext</option>
+                <option value="varchar" {if $field_item} {$field_item.setup.fieldtype=='varchar' ? 'selected':''} {/if}>varchar</option>
+            </select>
+        </td>
+    </tr>
+    </tbody>
+    {/case}
+    {case file}
+    <tbody>
+        <tr>
+            <td class="name">默认值：</td>
+            <td class="value">
+                <input type="text" name="setup[default]" autocomplete="off" class="layui-input" value="{$field_item.setup.default ?? ''}">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">额外的css类：</td>
+            <td class="value">
+                <input type="text" name="setup[css]" autocomplete="off" class="layui-input" value="{$field_item.setup.css ?? ''}">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">占位符：</td>
+            <td class="value">
+                <input type="text" name="setup[placeholder]" placeholder="" autocomplete="off" class="layui-input" value="{$field_item.setup.placeholder ?? '支持上传文件格式 ：'.$mi_uploads_file_ext}">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">文件上传大小(KB)：</td>
+            <td class="value">
+                <input type="text" name="setup[size]" placeholder="" autocomplete="off" class="layui-input" value="{$field_item.setup.size ?? $mi_uploads_file_size}">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">文件上传格式：</td>
+            <td class="value">
+                <input type="text" name="setup[ext]" placeholder="多个格式用 | 分割：jpg|zip|rar" autocomplete="off" class="layui-input" value="{$field_item.setup.ext ?: $mi_uploads_file_ext}">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">字段类型：</td>
+            <td class="value">
+            <select name="setup[fieldtype]" lay-filter="changetype">
+                <option value="text" {if $field_item} {$field_item.setup.fieldtype=='text' ? 'selected':''} {/if}>text</option>
+                <option value="mediumtext" {if $field_item} {$field_item.setup.fieldtype=='mediumtext' ? 'selected':''} {/if}>mediumtext</option>
+                <option value="varchar" {if $field_item} {$field_item.setup.fieldtype=='varchar' ? 'selected':''} {/if}>varchar</option>
+            </select>
+        </td>
+    </tr>
+    </tbody>
+    {/case}
+    {case files}
+    <tbody>
+        <tr>
+            <td class="name">默认值：</td>
+            <td class="value">
+                <input type="text" name="setup[default]" autocomplete="off" class="layui-input" value="{$field_item.setup.default ?? ''}">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">额外的css类：</td>
+            <td class="value">
+                <input type="text" name="setup[css]" autocomplete="off" class="layui-input" value="{$field_item.setup.css ?? ''}">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">占位符：</td>
+            <td class="value">
+                <input type="text" name="setup[placeholder]" placeholder="" autocomplete="off" class="layui-input" value="{$field_item.setup.placeholder ?? '支持上传文件格式 ：'.$mi_uploads_file_ext}">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">文件上传大小(KB)：</td>
+            <td class="value">
+                <input type="text" name="setup[size]" placeholder="" autocomplete="off" class="layui-input" value="{$field_item.setup.size ?? $mi_uploads_file_size}">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">文件上传格式：</td>
+            <td class="value">
+                <input type="text" name="setup[ext]" placeholder="多个格式用 | 分割：jpg|zip|rar" autocomplete="off" class="layui-input" value="{$field_item.setup.ext ?: $mi_uploads_file_ext}">
+            </td>
+        </tr>
+        <tr>
+            <td class="name">字段类型：</td>
+            <td class="value">
+            <select name="setup[fieldtype]" lay-filter="changetype">
+                <option value="text" {if $field_item} {$field_item.setup.fieldtype=='text' ? 'selected':''} {/if}>text</option>
+                <option value="mediumtext" {if $field_item} {$field_item.setup.fieldtype=='mediumtext' ? 'selected':''} {/if}>mediumtext</option>
+                <option value="varchar" {if $field_item} {$field_item.setup.fieldtype=='varchar' ? 'selected':''} {/if}>varchar</option>
+            </select>
+        </td>
+    </tr>
+    </tbody>
+    {/case}
+    {case number}
+    <tbody>
+        <tr>
+            <td class="name">默认值：</td>
+            <td class="value">
+                <input type="text" name="setup[default]" autocomplete="off" class="layui-input" value="{$field_item.setup.default ?? ''}">
+            </td>
+        </tr>
+            <tr>
+                <td class="name">额外的css类：</td>
+                <td class="value">
+                    <input type="text" name="setup[css]" autocomplete="off" class="layui-input" value="{$field_item.setup.css ?? ''}">
+                </td>
+            </tr>
+            <tr>
+                <td class="name">占位符：</td>
+                <td class="value">
+                    <input type="text" name="setup[placeholder]" placeholder="" autocomplete="off" class="layui-input" value="{$field_item.setup.placeholder ?? ''}">
+                </td>
+            </tr>
+            <tr>
+                <td class="name">小数点位数：</td>
+                <td class="value">
+                    <input type="text" name="setup[point]" placeholder="" autocomplete="off" class="layui-input" value="{$field_item.setup.point ?? ''}">
+                </td>
+            </tr>
+            <tr>
+                <td class="name">字段类型：</td>
+                <td class="value">
+                <select name="setup[fieldtype]" lay-filter="changetype">
+                    <option value="tinyint" {if $field_item} {$field_item.setup.fieldtype=='tinyint' ? 'selected':''} {/if}>tinyint</option>
+                    <option value="int" {if $field_item} {$field_item.setup.fieldtype=='int' ? 'selected':''} {/if}>int</option>
+                    <option value="varchar" {if $field_item} {$field_item.setup.fieldtype=='varchar' ? 'selected':''} {/if}>varchar</option>
+                    <option value="text" {if $field_item} {$field_item.setup.fieldtype=='text' ? 'selected':''} {/if}>text</option>
+                    <option value="mediumtext" {if $field_item} {$field_item.setup.fieldtype=='mediumtext' ? 'selected':''} {/if}>mediumtext</option>
+                </select>
+                </td>
+        </tr>
+    </tbody>
+    {/case}
+    {case password}
+    <tbody>
+        <tr>
+            <td class="name">默认值：</td>
+            <td class="value">
+                <input type="text" name="setup[default]" autocomplete="off" class="layui-input" value="{$field_item.setup.default ?? ''}">
+            </td>
+        </tr>
+            <tr>
+                <td class="name">额外的css类：</td>
+                <td class="value">
+                    <input type="text" name="setup[css]" autocomplete="off" class="layui-input" value="{$field_item.setup.css ?? ''}">
+                </td>
+            </tr>
+            <tr>
+                <td class="name">占位符：</td>
+                <td class="value">
+                    <input type="text" name="setup[placeholder]" placeholder="" autocomplete="off" class="layui-input" value="{$field_item.setup.placeholder ?? ''}">
+                </td>
+            </tr>
+            <tr>
+                <td class="name">字段类型：</td>
+                <td class="value">
+                <select name="setup[fieldtype]" lay-filter="changetype">
+                    <option value="varchar" {if $field_item} {$field_item.setup.fieldtype=='varchar' ? 'selected':''} {/if}>varchar</option>
+                    <option value="text" {if $field_item} {$field_item.setup.fieldtype=='text' ? 'selected':''} {/if}>text</option>
+                    <option value="mediumtext" {if $field_item} {$field_item.setup.fieldtype=='mediumtext' ? 'selected':''} {/if}>mediumtext</option>
+                </select>
+                </td>
+        </tr>
+    </tbody>
+    {/case}
+    {case hidden}
+    <tbody>
+        <tr>
+            <td class="name">默认值：</td>
+            <td class="value">
+                <input type="text" name="setup[default]" autocomplete="off" class="layui-input" value="{$field_item.setup.default ?? ''}">
+            </td>
+        </tr>
+            <tr>
+                <td class="name">额外的css类：</td>
+                <td class="value">
+                    <input type="text" name="setup[css]" autocomplete="off" class="layui-input" value="{$field_item.setup.css ?? ''}">
+                </td>
+            </tr>
+            <tr>
+                <td class="name">占位符：</td>
+                <td class="value">
+                    <input type="text" name="setup[placeholder]" placeholder="" autocomplete="off" class="layui-input" value="{$field_item.setup.placeholder ?? ''}">
+                </td>
+            </tr>
+            <tr>
+                <td class="name">字段类型：</td>
+                <td class="value">
+                <select name="setup[fieldtype]" lay-filter="changetype">
+                    <option value="tinyint" {if $field_item} {$field_item.setup.fieldtype=='tinyint' ? 'selected':''} {/if}>tinyint</option>
+                    <option value="int" {if $field_item} {$field_item.setup.fieldtype=='int' ? 'selected':''} {/if}>int</option>
+                    <option value="varchar" {if $field_item} {$field_item.setup.fieldtype=='varchar' ? 'selected':''} {/if}>varchar</option>
+                    <option value="text" {if $field_item} {$field_item.setup.fieldtype=='text' ? 'selected':''} {/if}>text</option>
+                    <option value="mediumtext" {if $field_item} {$field_item.setup.fieldtype=='mediumtext' ? 'selected':''} {/if}>mediumtext</option>
+                </select>
+                </td>
+        </tr>
+    </tbody>
+    {/case}
+    {case tags}
+    <tbody>
+        <tr>
+            <td class="name">默认值：</td>
+            <td class="value">
+                <input type="text" name="setup[default]" autocomplete="off" class="layui-input" value="{$field_item.setup.default ?? ''}">
+            </td>
+        </tr>
+            <tr>
+                <td class="name">额外的css类：</td>
+                <td class="value">
+                    <input type="text" name="setup[css]" autocomplete="off" class="layui-input" value="{$field_item.setup.css ?? ''}">
+                </td>
+            </tr>
+            <tr>
+                <td class="name">占位符：</td>
+                <td class="value">
+                    <input type="text" name="setup[placeholder]" placeholder="" autocomplete="off" class="layui-input" value="{$field_item.setup.placeholder ?? ''}">
+                </td>
+            </tr>
+            <tr>
+                <td class="name">字段类型：</td>
+                <td class="value">
+                <select name="setup[fieldtype]" lay-filter="changetype">
+                    <option value="varchar" {if $field_item} {$field_item.setup.fieldtype=='varchar' ? 'selected':''} {/if}>varchar</option>
+                    <option value="text" {if $field_item} {$field_item.setup.fieldtype=='text' ? 'selected':''} {/if}>text</option>
+                    <option value="mediumtext" {if $field_item} {$field_item.setup.fieldtype=='mediumtext' ? 'selected':''} {/if}>mediumtext</option>
+                </select>
+                </td>
+        </tr>
+    </tbody>
+    {/case}
+    {case pinyin}
+    <tbody>
+    <tr>
+        <td class="name">默认值：</td>
+        <td class="value">
+            <input type="text" name="setup[default]" autocomplete="off" class="layui-input" value="{$field_item.setup.default ?? ''}">
+        </td>
+    </tr>
+    <tr>
+        <td class="name">额外的css类：</td>
+        <td class="value">
+            <input type="text" name="setup[css]" autocomplete="off" class="layui-input" value="{$field_item.setup.css ?? ''}">
+        </td>
+    </tr>
+    <tr>
+        <td class="name">占位符：</td>
+        <td class="value">
+            <input type="text" name="setup[placeholder]" autocomplete="off" class="layui-input" value="{$field_item.setup.placeholder ?? ''}">
+        </td>
+    </tr>
+    <tr>
+        <td class="name">分隔符</td>
+        <td class="value">
+            <input type="text" name="setup[delimiter]" placeholder="分隔符：分割拼音的" autocomplete="off" class="layui-input" value="{$field_item.setup.delimiter ?? ''}" >
+        </td>
+    </tr>
+    <tr>
+        <td class="name">拼音类型：</td>
+        <td class="value">
+          <select name="setup[pinyintype]">
+              <option value="all" {if $field_item} {$field_item.setup.pinyintype=='all' ? 'selected':''} {/if} >全拼</option>
+              <option value="head" {if $field_item} {$field_item.setup.pinyintype=='head' ? 'selected':''} {/if} >首字母</option>
+          </select>
+        </td>
+    </tr>
+    <tr>
+        <td class="name">调用字段</td>
+        <td class="value">
+            <input type="text" name="setup[pinyinfield]" placeholder="获取当前模块指定字段值，并翻译成拼音，如果为空就获取当前本字段" autocomplete="off" class="layui-input" value="{$field_item.setup.pinyinfield}" >
+        </td>
+    </tr>
+    <tr>
+        <td class="name">字段类型：</td>
+        <td class="value">
+            <select name="setup[fieldtype]" lay-filter="changetype">
+                <option value="varchar" {if $field_item} {$field_item.setup.fieldtype=='varchar' ? 'selected':''} {/if}>varchar</option>
+                <option value="text" {if $field_item} {$field_item.setup.fieldtype=='text' ? 'selected':''} {/if}>text</option>
+                <option value="mediumtext" {if $field_item} {$field_item.setup.fieldtype=='mediumtext' ? 'selected':''} {/if}>mediumtext</option>
+            </select>
+        </td>
+    </tr>
+    </tbody>
+
+    {/case}
+    
+{/switch}
+
+</table>

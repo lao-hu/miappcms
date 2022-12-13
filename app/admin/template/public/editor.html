@@ -1,0 +1,18 @@
+<script src="__PLUGINS__/ckeditor/ckeditor.js"></script>
+<script>
+var ckeditors1 = null;
+var cheditorsplaceholder = '';
+var ckeditdata = '';
+$(function (){
+    
+    cheditorsplaceholder = ($("#ckeditor").attr('placeholder'));
+    ckeditors1 =   CKEDITOR.replace( 'ckeditor',{
+        filebrowserImageUploadUrl:'{:url("uploads/index")}?up_type=ckeditor',
+        image_previewText:' ',
+        extraPlugins: 'editorplaceholder',
+        editorplaceholder: cheditorsplaceholder,
+       
+    });
+    // 获取内容
+});
+</script>

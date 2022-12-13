@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <title>MIAPPCMS系统-老胡开发</title>
+    <meta name="keywords" content="MIAPPCMS系统-老胡开发">
+    <meta name="description" content="MIAPPCMS系统-老胡开发">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="stylesheet" href="__PLUGINS__/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="__PLUGINS__/layui/css/layui.css">
+    <link rel="stylesheet" href="__PLUGINS__/jquery-tabs-input/jquery.tagsinput.css">
+    <!-- codemirror -->
+    <link rel="stylesheet" href="__PLUGINS__/codemirror/codemirror.css">
+    <link rel="stylesheet" href="__PLUGINS__/codemirror/theme/{$mi_code_theme}.css">
+
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<script src="__JS__/jquery-3.6.0.min.js"> </script>
+
+<script src="__PLUGINS__/layui/layui.js"></script>
+<script src="__JS__/miappcms-config.js"> </script>
+
+<script src="__PLUGINS__/zTree/js/jquery.ztree.core.js"></script>
+<script src="__PLUGINS__/zTree/js/jquery.ztree.excheck.js"></script>
+
+<script src="__PLUGINS__/jquery-tabs-input/jquery.tagsinput.js"></script>
+
+
+<script>
+layui.use(['layer','element'], function(){
+    var layer = layui.layer;
+});
+</script>
+
+</head>
+<body class="layui-layout-body">
+  <div class="layui-layout layui-layout-admin miappcms-main-container {if $layer == true}miappcms-admin{/if}">
+  {if $layer == false}  
+    <div class="layui-header miappcms-main-header">
+      <div class="layui-logo layui-hide-xs"> <a href="{:url('index/index')}">{$miappcms.name} 管理系统</a> </div>
+      <!-- 头部区域（可配合layui 已有的水平导航） -->
+      <div class="miappcms-main-header-content">
+        <ul class="layui-nav layui-layout-left" lay-filter="miappcms-header" lay-bar="disabled" >
+          <!-- 移动端显示 -->
+          <li class="layui-nav-item layui-show-xs-inline-block" lay-header-event="menuLeft">
+            <a href="JavaScript:;" class="lefts" > <i class="layui-icon layui-icon-shrink-right"></i> </a>
+          </li>
+  
+          <li class="layui-nav-item layui-hide-xs layui-this"><a href="JavaScript:;"><i class="fa fa-cog" aria-hidden="true"></i> 主导航</a></li>
+          <!-- <li class="layui-nav-item layui-hide-xs"><a href="JavaScript:;"><i class="fa fa-th-large" aria-hidden="true"></i> 内容导航</a></li> -->
+        </ul>
+        
+        <ul class="layui-nav layui-layout-right" lay-bar="disabled">
+          <li class="layui-nav-item " lay-unselect><a href="{:url('/')}" title="前台首页" target="_blank" ><i class="fa fa-home" aria-hidden="true"></i> </a></li>
+          <li class="layui-nav-item " lay-unselect><a href="JavaScript:;" title="刷新页面" miappcms-refresh="刷新"><i class="fa fa-refresh" aria-hidden="true"></i> </a></li>
+          <li class="layui-nav-item " lay-unselect><a href="{:url('login/logout')}" title="清除缓存"><i class="fa fa-trash-o" aria-hidden="true"></i> </a></li>
+          <li class="layui-nav-item " lay-unselect><a href="JavaScript:;" title="全屏" miappcms-screen="full"><i class="fa fa-arrows-alt"></i> </a></li>
+          <li class="layui-nav-item layui-hide layui-show-md-inline-block" lay-unselect >
+            <a href="javascript:;">
+                <img src="{$userInfo.userimg|default='/static/assets/image/tx.jpg'}" class="layui-nav-img">
+                {$userInfo.nickname|default='匿名'}
+            </a>
+            <dl class="layui-nav-child">
+              <dd><a href="javascript:;" onclick="miappcms.open('基本资料','{:url(\"admin/edit\")}?id={$user_info.admin.id}&miappcms_layer=1')" >基本资料</a></dd>
+              <dd><a href="{:url('login/logout')}">退出登录</a></dd>
+            </dl>
+          </li>
+          <!-- <li class="layui-nav-item" lay-header-event="menuRight" lay-unselect>
+            <a href="javascript:;">
+              <i class="layui-icon layui-icon-more-vertical"></i>
+            </a>
+          </li> -->
+        </ul>
+      </div>
+    </div>
+  {/if}

@@ -1,0 +1,51 @@
+<div class="marb20">
+    <div class="layui-form-item marb0 miappcms-form-element[keyword]">
+        <label class="layui-form-label ">
+            {if $form[keyword].required == 1}
+            <span class="yd">*</span>
+            {/if}
+            {$form[keyword].title}：
+        </label>
+        <div class="layui-input-inline" style="width: 780px">
+            <div class="layui-input-inline" style="width: 670px;">
+                <input type="text" name="{$form[keyword].name}" placeholder="{$form[keyword].placeholder}" autocomplete="off" class="layui-input" value="{$form[keyword].value}"  lay-reqText="请输入" id="{$form[keyword].name}" {if $form[keyword].required == 1} required  lay-verify="required" {/if}  >
+            </div>
+            <div class="layui-input-inline" style="width: 80px;">
+                <a href="javascript:;" id="mipinyin-btn-{$form[keyword].name}" class="layui-btn miupload-btn-{$form[keyword].name}"><i class="layui-icon layui-icon-upload"></i>生成拼音</a>
+            </div>
+        </div>
+    </div>
+    {notempty name="form[keyword].tips"}
+    <div class="miappcms-form-desc marb0">
+        <i class="fa fa-info-circle"></i> {$form[keyword].tips}
+    </div>
+    {/notempty}
+</div>
+<script>
+    $("#mipinyin-btn-{$form[keyword].name}").on('click',function () {
+        {if empty($form[keyword].pinyinfield)}
+            var vals = $("#{$form[keyword].name}").val();
+        {else /}
+            var vals = $('#{$form[keyword].pinyinfield}').val();
+        {/if}
+        var field = '{$form[keyword].pinyinfield}';
+        if(field == "") {
+          field = "{$form[keyword].name}";
+        }
+        var delimiters = "{$form[keyword].delimiter}";
+        var url = "{:url('pinyinmake')}?f="+field+"&c="+vals+"&t={$form[keyword].pinyintype}";
+        if(delimiters != "")
+        {
+            url+="&s="+delimiters;
+        }
+        if(vals != ''){
+            $.get(url,function(res,status,xhr){
+                if(res.code == 1){
+                $("#{$form[keyword].name}").val(res.data);
+                }else{
+                miappcms.alerterror(res.msg);
+                }
+            });
+        }
+    });
+</script>

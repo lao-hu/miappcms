@@ -1,0 +1,34 @@
+ <!-- 左侧导航区域 -->
+<div class="layui-side miappcms-main-side">
+  <div class="layui-side-scroll">
+    <ul class="layui-nav layui-nav-tree" lay-filter="miappcms-main-side">
+      <li class="layui-nav-item"><a href="javascript:;">主导航</a></li>
+      {volist name="leftMenu" id="val" key="k"}
+        <li class="layui-nav-item {if !empty($breadcrumb)}{if $val.id == $breadcrumb.pid} layui-nav-itemed {/if} {/if} " >
+          <a href="javascript:;">
+            {empty name="$val.icon"}
+            <i class="fa fa-gears" aria-hidden="true"></i>
+            {else /}
+            <i class="{$val.icon}" aria-hidden="true"></i>
+            {/empty} 
+            <span>{$val.title}</span>  </a>
+          {present name="$val.child"}
+          <dl class="layui-nav-child">
+          {volist name="$val.child" id="vo"}
+            <dd class="{if !empty($breadcrumb)} {if $vo.name == strtolower($breadcrumb->name) } layui-this {/if} {/if} "><a href="javascript:;" miappcms-href="{:url($vo.name)}">
+              {empty name="$vo.icon"}
+              <i class="fa fa-circle-o" aria-hidden="true"></i>
+              {else /}
+              <i class="{$vo.icon}" aria-hidden="true"></i>
+              {/empty} 
+              <span>{$vo.title}</span></a>
+            </dd>
+          {/volist}
+          </dl>
+        {/present}
+        </li>
+      {/volist}
+    </ul>
+  </div>
+</div>
+
